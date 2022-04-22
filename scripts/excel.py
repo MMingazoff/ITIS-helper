@@ -1,4 +1,4 @@
-"""Срипты для exel"""
+"""Скрипты для ecxel"""
 
 
 def is_a_student_by_fio(fio: str) -> bool:
@@ -6,12 +6,12 @@ def is_a_student_by_fio(fio: str) -> bool:
     ...
 
 
-def is_a_student_by_fi(fio: str) -> bool:
+def is_a_student_by_fi(fi: str) -> bool:
     """Есть ли такой студент по ФИ"""
     ...
 
 
-def is_s_group(group_number: str) -> bool:
+def is_a_group(group_number: str) -> bool:
     """Есть ли такая группа"""
     ...
 

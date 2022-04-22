@@ -8,9 +8,9 @@ def menu_markup():
     helps = KeyboardButton('Помощь')
     change_prof = KeyboardButton('Сменить профиль')
     activity = KeyboardButton('Активности')
-    guid = KeyboardButton('Гид')
+    guide = KeyboardButton('Гид')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row(timetable, change_prof).row(study, activity).row(helps, guid)
+    keyboard.row(timetable, change_prof).row(study, activity).row(helps, guide)
     return keyboard
 
 
@@ -55,7 +55,7 @@ def help_markup():
     return keyboard
 
 
-def ativity_markup():
+def activity_markup():
     """"Кнопик для активностей"""
     events = KeyboardButton('Доступные мероприятия')
     place_in_rating = KeyboardButton('Я в рейтинге')
@@ -67,7 +67,7 @@ def ativity_markup():
     return keyboard
 
 
-def guild_markup():
+def guide_markup():
     """Кнопки для гита"""
     catering = KeyboardButton('Общепиты')
     places_to_relax = KeyboardButton('Места где можно отдохнуть')
@@ -78,7 +78,7 @@ def guild_markup():
     return keyboard
 
 
-def todaytomorrow_markup():
+def today_tomorrow_markup():
     """Кнопки для Расписания (сегодня/завтра)"""
     today = KeyboardButton('Пары сегодня')
     tomorrow = KeyboardButton('Пары завтра')

@@ -1,7 +1,8 @@
-"""Скрипть для БД"""
+"""Скрипты для БД"""
 
 
-def get_course(student: str):
+def get_course(group: str) -> int:
+    """Возвращает курс сутдента по его группе"""
     course = 1
     return course
 
@@ -11,7 +12,7 @@ def get_profile(user_id: str) -> str:
     ...
 
 
-def take_profile(user_id: str) -> None:
+def set_profile(fio: str, user_id: str) -> None:
     """Привязывает профиль к юзеру"""
     ...
 
