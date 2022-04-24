@@ -12,6 +12,11 @@ def get_profile(user_id: str) -> str:
     ...
 
 
+def get_group(fio: str) -> str:
+    """Возвращает группу студента по ФИО"""
+    ...
+
+
 def set_profile(fio: str, user_id: str) -> None:
     """Привязывает профиль к юзеру"""
     ...

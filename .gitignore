@@ -1,3 +1,4 @@
 /venv/
 .idea
 config.py
+vk_auth.py

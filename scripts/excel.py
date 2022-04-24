@@ -1,4 +1,4 @@
-"""Скрипты для ecxel"""
+"""Скрипты для excel"""
 
 
 def is_a_student_by_fio(fio: str) -> bool:

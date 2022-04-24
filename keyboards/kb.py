@@ -1,4 +1,5 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
+from scripts.vk_parsing import MAX_POSTS
 
 
 def menu_markup():
@@ -98,11 +99,20 @@ def someone_tametable_markup():
     return keyboard
 
 
-def events_markup():
-    copy_fio_group = KeyboardButton('Скопировать ФИО и группу')
-    back_to_activity = KeyboardButton('Назад в активность')
-    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row(copy_fio_group).row(back_to_activity)
+def events_inline_markup(post_url: str, post_num: int):
+    url_button = InlineKeyboardButton(text='Ссылка на пост', url=post_url)
+    next_post = InlineKeyboardButton(text='Следующий пост', callback_data='next post')
+    prev_post = InlineKeyboardButton(text='Предыдущий пост', callback_data='prev post')
+    fio_copy = InlineKeyboardButton(text='Скопировать ФИО и группу', callback_data='copy fio')
+    keyboard = InlineKeyboardMarkup(row_width=2)
+    keyboard.add(url_button)
+    if post_num == 0:
+        keyboard.add(next_post)
+    elif post_num == MAX_POSTS - 1:
+        keyboard.add(prev_post)
+    else:
+        keyboard.row(prev_post, next_post)
+    keyboard.add(fio_copy)
     return keyboard
 
 
