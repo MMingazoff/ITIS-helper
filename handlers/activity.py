@@ -1,13 +1,21 @@
+import aiogram.types
 from aiogram import types, Dispatcher
-from keyboards import menu_markup, activity_markup, events_markup, someone_points_markup, top_students_markup
+from keyboards import menu_markup, activity_markup, events_inline_markup, someone_points_markup, top_students_markup
 from exсel_to_dataframe import df_student
+from scripts.vk_parsing import get_posts
 from handlers.fsm import FSM_activity, FSM_start
+
+
+post_num = 0
+posts = get_posts("itis_request")
 
 
 async def activity(message: types.Message):
     if message.text == 'Доступные мероприятия':
-        await message.answer('Тут будет список свободных мероприятий', reply_markup=events_markup())
-        await FSM_activity.events.set()
+        # вывод первого поста
+        global post_num
+        post_num = 0
+        await message.answer(posts[0][0], reply_markup=events_inline_markup(posts[0][1], 0))
     if message.text == 'Я в рейтинге':
         ur_place = 'Тут будут твое место и твои баллы'
         await message.answer(ur_place)
@@ -27,14 +35,20 @@ async def activity(message: types.Message):
         await FSM_start.menu.set()
 
 
-async def events(message: types.Message):
-    if message.text == 'Скопировать ФИО и группу':
-        await message.answer('Копируешь свое фио')
-    if message.text == 'Назад в активность':
-        await message.answer(
-            'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы',
-            reply_markup=activity_markup())
-        await FSM_activity.activity.set()
+async def post_navigation(call: types.CallbackQuery):
+    global post_num
+    if call.data == 'next post':
+        post_num += 1
+    if call.data == 'prev post':
+        post_num -= 1
+    await call.message.edit_text(posts[post_num][0], reply_markup=events_inline_markup(posts[post_num][1], post_num))
+
+
+async def fio_copy_callback(call: types.CallbackQuery):
+    # get_profile get_group
+    await call.message.answer(f'Нажми на чтобы скопировать:\n`Фамилия Имя Отчество 11-104`',
+                              parse_mode=aiogram.types.ParseMode.MARKDOWN)
+    await call.answer()
 
 
 async def someone_points(message: types.Message):
@@ -68,6 +82,7 @@ async def top_students(message: types.Message):
 
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(activity, state=FSM_activity.activity)
-    dp.register_message_handler(events, state=FSM_activity.events)
+    dp.register_callback_query_handler(post_navigation, state=FSM_activity.activity, text_contains='post')
+    dp.register_callback_query_handler(fio_copy_callback, state=FSM_activity.activity, text='copy fio')
     dp.register_message_handler(someone_points, state=FSM_activity.someone_points)
     dp.register_message_handler(top_students, state=FSM_activity.top_students)
