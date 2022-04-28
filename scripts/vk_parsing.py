@@ -1,9 +1,22 @@
 import requests
+import re
 from typing import List, Tuple
 from vk_auth import access_token
 
 
 MAX_POSTS = 10
+
+
+def from_id_to_url(post_txt: str) -> str:
+    """Текст типа [id01|Павел] преобразуется в ссылку"""
+    found_data = re.findall(r'\[.+\]', post_txt)
+    new_post_txt = post_txt
+    if found_data:
+        user_id, name = found_data[0][1:-1].split('|')
+        # new_url = f'[{name}](https://vk.com/{user_id})'
+        new_url = f'<a href="https://vk.com/{user_id}">{name}</a>'
+        new_post_txt = re.sub(r'\[.+\]', new_url, new_post_txt)
+    return new_post_txt
 
 
 def get_posts(group_name: str) -> List[Tuple[str, str]]:
@@ -16,6 +29,6 @@ def get_posts(group_name: str) -> List[Tuple[str, str]]:
     posts = source["response"]["items"]
     result = []
     for post in posts:
-        result.append((post["text"],
+        result.append((from_id_to_url(post["text"]),
                        f"https://vk.com/itis_request?w=wall{post['from_id']}_{post['id']}"))
     return result

@@ -101,9 +101,9 @@ def someone_tametable_markup():
 
 def events_inline_markup(post_url: str, post_num: int):
     url_button = InlineKeyboardButton(text='Ссылка на пост', url=post_url)
-    next_post = InlineKeyboardButton(text='Следующий пост', callback_data='next post')
-    prev_post = InlineKeyboardButton(text='Предыдущий пост', callback_data='prev post')
-    fio_copy = InlineKeyboardButton(text='Скопировать ФИО и группу', callback_data='copy fio')
+    next_post = InlineKeyboardButton(text='Следующий пост', callback_data=f'nextpost{post_num}')
+    prev_post = InlineKeyboardButton(text='Предыдущий пост', callback_data=f'prevpost{post_num}')
+    fio_copy = InlineKeyboardButton(text='Скопировать ФИО и группу', callback_data='copyfio')
     keyboard = InlineKeyboardMarkup(row_width=2)
     keyboard.add(url_button)
     if post_num == 0:
@@ -144,4 +144,12 @@ def wishes_markup():
     back_to_helps = KeyboardButton('Вернуться в помощь')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row(back_to_helps)
+    return keyboard
+
+
+def delete_msg_inline_markup():
+    """Инлайн кнопка, чтобы удалять сообщение"""
+    delete_msg = InlineKeyboardButton(text='Удалить сообщение', callback_data='todelete')
+    keyboard = InlineKeyboardMarkup()
+    keyboard.add(delete_msg)
     return keyboard
