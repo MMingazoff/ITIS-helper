@@ -1,6 +1,6 @@
 from aiogram import types, Dispatcher
 from keyboards import menu_markup, timetable_markup, study_markup, help_markup, activity_markup, guide_markup
-from scripts import *
+from scripts import *  # вставить нужные скрипты
 from handlers.fsm import FSM_start, FSM_study, FSM_guide, FSM_helps, FSM_activity, FSM_timetable
 from exсel_to_dataframe import df_student
 
