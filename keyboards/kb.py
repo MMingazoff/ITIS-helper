@@ -153,7 +153,8 @@ def swap_profile_markup():
     back_to_menu = KeyboardButton('Вернуться в меню')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row(back_to_menu)
-    
+    return keyboard
+
     
 def delete_msg_inline_markup():
     """Инлайн кнопка, чтобы удалять сообщение"""

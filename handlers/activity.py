@@ -7,12 +7,12 @@ from keyboards import (menu_markup,
                        top_students_markup,
                        delete_msg_inline_markup)
 from scripts.excel import is_a_student_by_fi
-from scripts.vk_parsing import get_posts
+from scripts.vk_parsing import get_posts, get_dom18_posts
 from handlers.fsm import FSM_activity, FSM_start
 from scripts.sql import get_profile
 from scripts.excel import get_group_by_fio, get_course_by_fio
 
-post_num = list()
+posts = list()
 
 
 async def activity(message: types.Message):
@@ -20,6 +20,7 @@ async def activity(message: types.Message):
         # вывод первого поста
         global posts
         posts = get_posts("itis_request")
+        # posts = get_dom18_posts()
         await message.answer(posts[0][0],
                              reply_markup=events_inline_markup(posts[0][1], 0),
                              parse_mode=types.ParseMode.HTML)
@@ -56,11 +57,9 @@ async def post_navigation(call: types.CallbackQuery):
 
 
 async def fio_copy_callback(call: types.CallbackQuery):
-    # get_profile get_group
     fio = get_profile(call.from_user.id)
     group = get_group_by_fio(fio)
-    await call.message.answer('Скопируйте свое ФИО и группу 👇')
-    await call.message.answer(f'Нажми на чтобы скопировать:\n`{fio} {group}`',
+    await call.message.answer(f'Нажми, чтобы скопировать 👇:\n`{fio} {group}`',
                               parse_mode=aiogram.types.ParseMode.MARKDOWN,
                               reply_markup=delete_msg_inline_markup())
     await call.answer()
@@ -102,8 +101,8 @@ async def top_students(message: types.Message):
 
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(activity, state=FSM_activity.activity)
-    dp.register_callback_query_handler(post_navigation, state=FSM_activity.activity, text_contains='post')
-    dp.register_callback_query_handler(fio_copy_callback, state=FSM_activity.activity, text='copyfio')
-    dp.register_callback_query_handler(delete_msg_callback, state=FSM_activity.activity, text='todelete')
+    dp.register_callback_query_handler(post_navigation, state="*", text_contains='post')
+    dp.register_callback_query_handler(fio_copy_callback, state="*", text='copyfio')
+    dp.register_callback_query_handler(delete_msg_callback, state="*", text='todelete')
     dp.register_message_handler(someone_points, state=FSM_activity.someone_points)
     dp.register_message_handler(top_students, state=FSM_activity.top_students)
