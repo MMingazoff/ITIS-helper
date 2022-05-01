@@ -25,6 +25,7 @@ class FSM_helps(StatesGroup):
 
 class FSM_activity(StatesGroup):
     activity = State()
+    activities = State()
     someone_points = State()
     top_students = State()
 

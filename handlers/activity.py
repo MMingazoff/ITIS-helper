@@ -5,25 +5,31 @@ from keyboards import (menu_markup,
                        events_inline_markup,
                        someone_points_markup,
                        top_students_markup,
-                       delete_msg_inline_markup)
+                       delete_msg_inline_markup,
+                       choose_events_markup)
 from scripts.excel import is_a_student_by_fi
-from scripts.vk_parsing import get_posts, get_dom18_posts
+from scripts.vk_parsing import get_request_posts, get_du_posts
 from handlers.fsm import FSM_activity, FSM_start
 from scripts.sql import get_profile
-from scripts.excel import get_group_by_fio, get_course_by_fio
+from scripts.excel import get_group_by_fio, get_course_by_fio, from_du
 
-posts = list()
+request_posts = list()
+du_posts = list()
 
 
 async def activity(message: types.Message):
     if message.text == 'Доступные мероприятия':
-        # вывод первого поста
-        global posts
-        posts = get_posts("itis_request")
-        # posts = get_dom18_posts()
-        await message.answer(posts[0][0],
-                             reply_markup=events_inline_markup(posts[0][1], 0),
-                             parse_mode=types.ParseMode.HTML)
+        fio = get_profile(message.from_user.id)
+        if from_du(fio):
+            await message.answer("Какие мероприятия тебе нужны?", reply_markup=choose_events_markup())
+            await FSM_activity.activities.set()
+        else:
+            # вывод первого поста
+            global request_posts
+            request_posts = get_request_posts()
+            await message.answer(request_posts[0][0],
+                                 reply_markup=events_inline_markup("itisrequest", request_posts[0][1], 0),
+                                 parse_mode=types.ParseMode.HTML)
     if message.text == 'Я в рейтинге':
         ur_place = 'Тут будут твое место и твои баллы'
         await message.answer(ur_place)
@@ -43,16 +49,50 @@ async def activity(message: types.Message):
         await FSM_start.menu.set()
 
 
+async def choose_activity(message: types.Message):
+    if message.text == 'Itis Request':
+        global request_posts
+        request_posts = get_request_posts()
+        await message.answer(request_posts[0][0],
+                             reply_markup=events_inline_markup("itisrequest", request_posts[0][1], 0),
+                             parse_mode=types.ParseMode.HTML)
+    if message.text == 'ДУ 18':
+        global du_posts
+        du_posts = get_du_posts()
+        await message.answer(du_posts[0][0],
+                             reply_markup=events_inline_markup("du", du_posts[0][1], 0),
+                             parse_mode=types.ParseMode.HTML)
+    if message.text == 'Вернуться в меню':
+        fio = get_profile(message.from_user.id)
+        course = get_course_by_fio(fio)
+        group = get_group_by_fio(fio)
+        await message.answer(
+            f'Привет, {fio}, я готов тебе помогать\n\nФИО: {fio} \nКурс: {course} \nГруппа: {group} \nЧто тебе нужно?',
+            reply_markup=menu_markup())
+        await FSM_start.menu.set()
+
+
 async def post_navigation(call: types.CallbackQuery):
-    global posts
-    post_num = int(call.data[8:])
-    if call.data.startswith('next'):
+    group_name, post_num = call.data.split('post')
+    group_name = group_name[:-4]
+    post_num = int(post_num)
+    if 'next' in call.data:
         post_num += 1
-    if call.data.startswith('prev'):
+    if 'prev' in call.data:
         post_num -= 1
-    await call.message.edit_text(posts[post_num][0],
-                                 reply_markup=events_inline_markup(posts[post_num][1], post_num),
-                                 parse_mode=types.ParseMode.HTML)
+    if group_name == 'itisrequest':
+        global request_posts
+        await call.message.edit_text(request_posts[post_num][0],
+                                     reply_markup=events_inline_markup("itisrequest",
+                                                                       request_posts[post_num][1],
+                                                                       post_num),
+                                     parse_mode=types.ParseMode.HTML)
+    if group_name == 'du':
+        global du_posts
+        await call.message.edit_text(du_posts[post_num][0],
+                                     reply_markup=events_inline_markup("du", du_posts[post_num][1], post_num),
+                                     parse_mode=types.ParseMode.HTML)
+
     await call.answer()
 
 
@@ -101,6 +141,7 @@ async def top_students(message: types.Message):
 
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(activity, state=FSM_activity.activity)
+    dp.register_message_handler(choose_activity, state=FSM_activity.activities)
     dp.register_callback_query_handler(post_navigation, state="*", text_contains='post')
     dp.register_callback_query_handler(fio_copy_callback, state="*", text='copyfio')
     dp.register_callback_query_handler(delete_msg_callback, state="*", text='todelete')
