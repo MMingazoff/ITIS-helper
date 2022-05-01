@@ -1,3 +1,4 @@
 aiogram==2.20
 openpyxl==3.0.9
 requests==2.27.1
+pandas==1.4.2

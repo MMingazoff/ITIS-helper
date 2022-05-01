@@ -4,6 +4,7 @@ from handlers.fsm import FSM_guide, FSM_start
 from scripts.sql import get_profile
 from scripts.excel import get_group_by_fio, get_course_by_fio
 
+
 async def guide(message: types.Message):
     if message.text == 'Общепиты':
         catering = 'Тут должны быть общепиты'
