@@ -1,4 +1,10 @@
+import sqlite3
+import os
+
 """Скрипты для БД"""
+path = os.path.abspath(__file__)[:-14]
+base = sqlite3.connect(path + 'data/students.db')
+cursor = base.cursor()
 
 
 def get_course(group: str) -> int:
@@ -7,18 +13,29 @@ def get_course(group: str) -> int:
     return course
 
 
-def get_profile(user_id: str) -> str:
+def set_profile(user_id: int, fio: str) -> None:
+    """Привязывает профиль к юзеру"""
+    if user_in_db(user_id):
+        cursor.execute("UPDATE users SET fio = ? WHERE user_id = ?", (fio, user_id))
+    else:
+        cursor.execute("INSERT INTO users (user_id, fio) VALUES (?,?)", (user_id, fio))
+    base.commit()
+
+
+def get_profile(user_id: int) -> str:
     """Возвращает ФИО студента, на который зашел юзер"""
-    ...
+    result = cursor.execute("SELECT fio FROM users WHERE user_id = ?", (user_id,))
+    return result.fetchone()[0]
+
+
+def user_in_db(user_id: int) -> bool:
+    """Проверяет наличие пользователя в БД"""
+    result = cursor.execute("SELECT id FROM users WHERE user_id = ?", (user_id,))
+    return bool(len(result.fetchall()))
 
 
 def get_group(fio: str) -> str:
     """Возвращает группу студента по ФИО"""
-    ...
-
-
-def set_profile(fio: str, user_id: str) -> None:
-    """Привязывает профиль к юзеру"""
     ...
 
 

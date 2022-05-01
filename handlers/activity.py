@@ -1,10 +1,11 @@
 import aiogram.types
 from aiogram import types, Dispatcher
 from keyboards import menu_markup, activity_markup, events_inline_markup, someone_points_markup, top_students_markup
-from exсel_to_dataframe import df_student
+from scripts.excel import is_a_student_by_fi
 from scripts.vk_parsing import get_posts
 from handlers.fsm import FSM_activity, FSM_start
-
+from scripts.sql import get_profile
+from scripts.excel import get_group_by_fio, get_course_by_fio
 
 post_num = 0
 posts = get_posts("itis_request")
@@ -26,11 +27,11 @@ async def activity(message: types.Message):
         await message.answer('Тут должен быть список студнтов с 1 по 10 место', reply_markup=top_students_markup())
         await FSM_activity.top_students.set()
     if message.text == 'Вернуться в меню':
-        fio = 'Фамилия Имя Отчество'
-        course = 'n-ый'
-        group = '***-**'
+        fio = get_profile(message.from_user.id)
+        course = get_course_by_fio(fio)
+        group = get_group_by_fio(fio)
         await message.answer(
-            f'Привет, {fio}, я готов тебе помогать\n\nФИО: {fio} \n Курс: {course} \n Группа: {group} \nЧто тебе нужно?',
+            f'Привет, {fio}, я готов тебе помогать\n\nФИО: {fio} \nКурс: {course} \nГруппа: {group} \nЧто тебе нужно?',
             reply_markup=menu_markup())
         await FSM_start.menu.set()
 
@@ -46,13 +47,17 @@ async def post_navigation(call: types.CallbackQuery):
 
 async def fio_copy_callback(call: types.CallbackQuery):
     # get_profile get_group
+    fio = get_profile(call.from_user.id)
+    group = get_group_by_fio(fio)
+    await call.message.answer('Скопируйте свое ФИО и группу 👇')
+    await call.message.answer(f'{fio} {group}')
     await call.message.answer(f'Нажми на чтобы скопировать:\n`Фамилия Имя Отчество 11-104`',
                               parse_mode=aiogram.types.ParseMode.MARKDOWN)
     await call.answer()
 
 
 async def someone_points(message: types.Message):
-    if any(df_student.ФИО == message.text):
+    if is_a_student_by_fi(message.text):
         await message.answer(f'У {message.text} n баллов и он на k месте')
     elif message.text == 'Назад в активность':
         await message.answer(

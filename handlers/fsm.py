@@ -4,6 +4,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 class FSM_start(StatesGroup):
     fio = State()
     menu = State()
+    swap_profile =State()
 
 
 class FSM_timetable(StatesGroup):

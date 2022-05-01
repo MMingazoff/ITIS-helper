@@ -1,8 +1,18 @@
 from aiogram import types, Dispatcher
+from scripts.sql import get_profile
+from handlers.fsm import FSM_start
+from scripts.excel import get_group_by_fio, get_course_by_fio
+from keyboards.kb import menu_markup
 
 
 async def echo_message(message: types.Message):
-    await message.answer("Используй кнопки, я тебя не понимаю 😓")
+    fio = get_profile(message.from_user.id)
+    course = get_course_by_fio(fio)
+    group = get_group_by_fio(fio)
+    await message.answer(
+        f'Привет, {fio}, я готов тебе помогать\n\nФИО: {fio} \nКурс: {course} \nГруппа: {group} \nЧто тебе нужно?',
+        reply_markup=menu_markup())
+    await FSM_start.menu.set()
 
 
 def register_handlers(dp: Dispatcher):

@@ -27,16 +27,18 @@ def timetable_markup():
     return keyboard
 
 
-def study_markup(course: int):
+def study_markup(course: str):
     """Кнопки для учебы"""
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
     back_to_menu = KeyboardButton('Назад в меню')
     course_dict = {
-        'course_1': ['Инфа', 'Матан', 'Алгем'],
-        'course_2': ['Тик'],
-        'course_3': ['ML', 'DL'],
-        'course_4': ['Django', 'SQL']}
-    course = 'course_' + str(course)
+        'course_1': ['Информатика и программирование', 'Математический анализ', 'Алгебра и геометрия',
+                     'Дискретная математика', 'Алгоритмы и структуры данных'],
+        'course_2': ['Основы разработки информационных систем', 'Дисциплины по выбору Б1.В.ДВ.3'],
+        'course_3': ['Программная инженерия', 'Архитектура программных систем', '	Информационная безопасность',
+                     '	Управление проектами', 'Дисциплины по выбору Б1.В.ДВ.7'],
+        'course_4': ['Основы информационного поиска', 'Дисциплины по выбору Б1.В.ДВ.12']}
+    course = 'course_' + course
     for kb in course_dict[course]:
         keyboard.row(KeyboardButton(kb))
 
@@ -144,4 +146,11 @@ def wishes_markup():
     back_to_helps = KeyboardButton('Вернуться в помощь')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row(back_to_helps)
+    return keyboard
+
+
+def swap_profile_markup():
+    back_to_menu = KeyboardButton('Вернуться в меню')
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.row(back_to_menu)
     return keyboard

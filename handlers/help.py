@@ -1,6 +1,8 @@
 from aiogram import types, Dispatcher
 from keyboards import menu_markup, help_markup, wishes_markup
 from handlers.fsm import FSM_helps, FSM_start
+from scripts.sql import get_profile
+from scripts.excel import get_group_by_fio, get_course_by_fio
 
 
 async def help(message: types.Message):
@@ -17,11 +19,11 @@ async def help(message: types.Message):
         await message.answer('Введите ваши пожелания', reply_markup=wishes_markup())
         await FSM_helps.wishes.set()
     if message.text == 'Вернуться в меню':
-        fio = 'Фамилия Имя Отчество'
-        course = 'n-ый'
-        group = '***-**'
+        fio = get_profile(message.from_user.id)
+        course = get_course_by_fio(fio)
+        group = get_group_by_fio(fio)
         await message.answer(
-            f'Привет, {fio}, я готов тебе помогать\n\nФИО: {fio} \n Курс: {course} \n Группа: {group} \nЧто тебе нужно?',
+            f'Привет, {fio}, я готов тебе помогать\n\nФИО: {fio} \nКурс: {course} \nГруппа: {group} \nЧто тебе нужно?',
             reply_markup=menu_markup())
         await FSM_start.menu.set()
 
