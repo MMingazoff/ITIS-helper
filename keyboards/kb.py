@@ -91,7 +91,7 @@ def today_tomorrow_markup():
     return keyboard
 
 
-def someone_tametable_markup():
+def someone_timetable_markup():
     """Кнопки для расписания (посмотреть расписание у другого человека)"""
     fi = KeyboardButton('Фамилия Имя')
     group = KeyboardButton('Номер группы')
@@ -101,10 +101,10 @@ def someone_tametable_markup():
     return keyboard
 
 
-def events_inline_markup(post_url: str, post_num: int):
+def events_inline_markup(group_name: str, post_url: str, post_num: int):
     url_button = InlineKeyboardButton(text='Ссылка на пост', url=post_url)
-    next_post = InlineKeyboardButton(text='Следующий пост', callback_data=f'nextpost{post_num}')
-    prev_post = InlineKeyboardButton(text='Предыдущий пост', callback_data=f'prevpost{post_num}')
+    next_post = InlineKeyboardButton(text='Следующий пост', callback_data=f'{group_name}nextpost{post_num}')
+    prev_post = InlineKeyboardButton(text='Предыдущий пост', callback_data=f'{group_name}prevpost{post_num}')
     fio_copy = InlineKeyboardButton(text='Скопировать ФИО и группу', callback_data='copyfio')
     keyboard = InlineKeyboardMarkup(row_width=2)
     keyboard.add(url_button)
@@ -161,4 +161,13 @@ def delete_msg_inline_markup():
     delete_msg = InlineKeyboardButton(text='Удалить сообщение', callback_data='todelete')
     keyboard = InlineKeyboardMarkup()
     keyboard.add(delete_msg)
+    return keyboard
+
+
+def choose_events_markup():
+    itis_request = KeyboardButton('Itis Request')
+    du = KeyboardButton('ДУ 18')
+    back_to_menu = KeyboardButton('Вернуться в меню')
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.row(itis_request, du).add(back_to_menu)
     return keyboard
