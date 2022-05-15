@@ -29,7 +29,8 @@ async def activity(message: types.Message):
             request_posts = get_request_posts()
             await message.answer(request_posts[0][0],
                                  reply_markup=events_inline_markup("itisrequest", request_posts[0][1], 0),
-                                 parse_mode=types.ParseMode.HTML)
+                                 parse_mode=types.ParseMode.HTML,
+                                 disable_web_page_preview=True)
     if message.text == 'Я в рейтинге':
         ur_place = 'Тут будут твое место и твои баллы'
         await message.answer(ur_place)
@@ -55,13 +56,15 @@ async def choose_activity(message: types.Message):
         request_posts = get_request_posts()
         await message.answer(request_posts[0][0],
                              reply_markup=events_inline_markup("itisrequest", request_posts[0][1], 0),
-                             parse_mode=types.ParseMode.HTML)
+                             parse_mode=types.ParseMode.HTML,
+                             disable_web_page_preview=True)
     if message.text == 'ДУ 18':
         global du_posts
         du_posts = get_du_posts()
         await message.answer(du_posts[0][0],
                              reply_markup=events_inline_markup("du", du_posts[0][1], 0),
-                             parse_mode=types.ParseMode.HTML)
+                             parse_mode=types.ParseMode.HTML,
+                             disable_web_page_preview=True)
     if message.text == 'Вернуться в меню':
         fio = get_profile(message.from_user.id)
         course = get_course_by_fio(fio)
@@ -86,12 +89,14 @@ async def post_navigation(call: types.CallbackQuery):
                                      reply_markup=events_inline_markup("itisrequest",
                                                                        request_posts[post_num][1],
                                                                        post_num),
-                                     parse_mode=types.ParseMode.HTML)
+                                     parse_mode=types.ParseMode.HTML,
+                                     disable_web_page_preview=True)
     if group_name == 'du':
         global du_posts
         await call.message.edit_text(du_posts[post_num][0],
                                      reply_markup=events_inline_markup("du", du_posts[post_num][1], post_num),
-                                     parse_mode=types.ParseMode.HTML)
+                                     parse_mode=types.ParseMode.HTML,
+                                     disable_web_page_preview=True)
 
     await call.answer()
 
