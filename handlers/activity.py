@@ -65,14 +65,11 @@ async def choose_activity(message: types.Message):
                              reply_markup=events_inline_markup("du", du_posts[0][1], 0),
                              parse_mode=types.ParseMode.HTML,
                              disable_web_page_preview=True)
-    if message.text == 'Вернуться в меню':
-        fio = get_profile(message.from_user.id)
-        course = get_course_by_fio(fio)
-        group = get_group_by_fio(fio)
+    if message.text == 'Вернуться в активность':
         await message.answer(
-            f'Привет, {fio}, я готов тебе помогать\n\nФИО: {fio} \nКурс: {course} \nГруппа: {group} \nЧто тебе нужно?',
-            reply_markup=menu_markup())
-        await FSM_start.menu.set()
+            'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы',
+            reply_markup=activity_markup())
+        await FSM_activity.activity.set()
 
 
 async def post_navigation(call: types.CallbackQuery):
@@ -103,7 +100,9 @@ async def post_navigation(call: types.CallbackQuery):
 
 async def fio_copy_callback(call: types.CallbackQuery):
     fio = get_profile(call.from_user.id)
-    group = get_group_by_fio(fio)
+    group = '\b'
+    if call.data.endswith('group'):
+        group = get_group_by_fio(fio)
     await call.message.answer(f'Нажми, чтобы скопировать 👇:\n`{fio} {group}`',
                               parse_mode=aiogram.types.ParseMode.MARKDOWN,
                               reply_markup=delete_msg_inline_markup())
@@ -148,7 +147,7 @@ def register_handlers(dp: Dispatcher):
     dp.register_message_handler(activity, state=FSM_activity.activity)
     dp.register_message_handler(choose_activity, state=FSM_activity.activities)
     dp.register_callback_query_handler(post_navigation, state="*", text_contains='post')
-    dp.register_callback_query_handler(fio_copy_callback, state="*", text='copyfio')
+    dp.register_callback_query_handler(fio_copy_callback, state="*", text_contains='copyfio')
     dp.register_callback_query_handler(delete_msg_callback, state="*", text='todelete')
     dp.register_message_handler(someone_points, state=FSM_activity.someone_points)
     dp.register_message_handler(top_students, state=FSM_activity.top_students)

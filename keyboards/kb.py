@@ -105,7 +105,12 @@ def events_inline_markup(group_name: str, post_url: str, post_num: int):
     url_button = InlineKeyboardButton(text='Ссылка на пост', url=post_url)
     next_post = InlineKeyboardButton(text='Следующий пост', callback_data=f'{group_name}nextpost{post_num}')
     prev_post = InlineKeyboardButton(text='Предыдущий пост', callback_data=f'{group_name}prevpost{post_num}')
-    fio_copy = InlineKeyboardButton(text='Скопировать ФИО и группу', callback_data='copyfio')
+    copy_text = 'Скопировать ФИО и группу'
+    call_back = 'copyfiogroup'
+    if group_name == 'du':
+        copy_text = 'Скопировать ФИО'
+        call_back = 'copyfio'
+    fio_copy = InlineKeyboardButton(text=copy_text, callback_data=call_back)
     keyboard = InlineKeyboardMarkup(row_width=2)
     keyboard.add(url_button)
     if post_num == 0:
@@ -167,7 +172,7 @@ def delete_msg_inline_markup():
 def choose_events_markup():
     itis_request = KeyboardButton('Itis Request')
     du = KeyboardButton('ДУ 18')
-    back_to_menu = KeyboardButton('Вернуться в меню')
+    back_to_menu = KeyboardButton('Вернуться в активность')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row(itis_request, du).add(back_to_menu)
     return keyboard
