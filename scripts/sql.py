@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from scripts.excel import get_group_by_fi
 
 """Скрипты для БД"""
 path = os.path.abspath(__file__)[:-14]
@@ -47,3 +48,49 @@ def input_points(user_id: str, place: str) -> None:
 def get_points(place: str) -> None:
     """Возвращает среднее количество баллов у места"""
     ...
+
+
+def get_everything(table: str):
+    """Достает все ссылки и из названия"""
+    result = cursor.execute(f"SELECT * FROM {table}")
+    return result.fetchall()
+
+
+def add_link(name: str, link: str) -> bool:
+    """Добавляет ссылку и название в БД"""
+    try:
+        cursor.execute("INSERT INTO links (name, link) VALUES (?,?)", (name, link))
+        base.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
+
+
+def del_link(name: str):
+    """Удаляет ссылку из БД по названию"""
+    cursor.execute("DELETE FROM links WHERE name = ?", (name, ))
+    base.commit()
+
+
+def get_elders():
+    """Достает старост всех групп"""
+    result = cursor.execute(f"SELECT * FROM elders")
+    result = result.fetchall()
+    result = [(get_group_by_fi(fi), fi, contact) for fi, contact in result]
+    return result
+
+
+def add_elder(fi: str, contact: str):
+    """Добавление старосты"""
+    try:
+        cursor.execute("INSERT INTO elders (fi, contact) VALUES (?,?)", (fi, contact))
+        base.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
+
+
+def del_elder(fi: str):
+    """Удаляет старосту из БД по имени"""
+    cursor.execute("DELETE FROM elders WHERE fio = ?", (fi,))
+    base.commit()
