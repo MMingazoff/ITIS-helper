@@ -36,7 +36,7 @@ def get_group_by_fi(fi: str) -> str:
         profile = df_students[df_students['FI'] == fi]
         group = tuple(profile['Group'])[0]
         return str(group)
-    return f'Такого студента нет'
+    return 'Такого студента нет'
 
 
 def get_course_by_fi(fi: str) -> str:

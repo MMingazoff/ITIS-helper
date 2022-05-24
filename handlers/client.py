@@ -5,7 +5,6 @@ from handlers import activity
 from handlers import study
 from handlers import guide
 from handlers import help
-from handlers import other
 
 
 def register_handlers(dp: Dispatcher):
@@ -15,4 +14,3 @@ def register_handlers(dp: Dispatcher):
     study.register_handlers(dp)
     guide.register_handlers(dp)
     help.register_handlers(dp)
-    other.register_handlers(dp)

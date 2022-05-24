@@ -1,8 +1,9 @@
 from aiogram import types, Dispatcher
 from keyboards import menu_markup, today_tomorrow_markup, timetable_markup, timetable_someone_markup
-from scripts import *
-from handlers.fsm import FSM_timetable, FSM_start
+from scripts.timetable import get_week_timetable, get_now_lesson, get_tomorrow_lessons, get_today_lessons
+from scripts.excel import get_group_by_fi
 from scripts.sql import get_profile
+from handlers.fsm import FSM_timetable, FSM_start
 from scripts.excel import get_group_by_fio, get_course_by_fio, is_a_group, is_a_student_by_fi
 
 

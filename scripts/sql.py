@@ -1,6 +1,7 @@
 import sqlite3
 import os
 from scripts.excel import get_group_by_fi
+from typing import List, Tuple
 
 """Скрипты для БД"""
 path = os.path.abspath(__file__)[:-14]
@@ -50,7 +51,7 @@ def get_points(place: str) -> None:
     ...
 
 
-def get_everything(table: str):
+def get_everything(table: str) -> List[str]:
     """Достает все ссылки и из названия"""
     result = cursor.execute(f"SELECT * FROM {table}")
     return result.fetchall()
@@ -66,13 +67,15 @@ def add_link(name: str, link: str) -> bool:
         return False
 
 
-def del_link(name: str):
+def del_link(name: str) -> bool:
     """Удаляет ссылку из БД по названию"""
+    result = cursor.execute("SELECT * FROM links WHERE name = ?", (name, ))
     cursor.execute("DELETE FROM links WHERE name = ?", (name, ))
     base.commit()
+    return not bool(len(result.fetchall()))
 
 
-def get_elders():
+def get_elders() -> List[Tuple[str, str, str]]:
     """Достает старост всех групп"""
     result = cursor.execute(f"SELECT * FROM elders")
     result = result.fetchall()
@@ -80,9 +83,11 @@ def get_elders():
     return result
 
 
-def add_elder(fi: str, contact: str):
+def add_elder(fi: str, contact: str) -> bool:
     """Добавление старосты"""
     try:
+        if get_group_by_fi(fi) == "Такого студента нет":
+            return False
         cursor.execute("INSERT INTO elders (fi, contact) VALUES (?,?)", (fi, contact))
         base.commit()
         return True
@@ -90,7 +95,9 @@ def add_elder(fi: str, contact: str):
         return False
 
 
-def del_elder(fi: str):
+def del_elder(fi: str) -> bool:
     """Удаляет старосту из БД по имени"""
-    cursor.execute("DELETE FROM elders WHERE fio = ?", (fi,))
+    result = cursor.execute("SELECT * FROM elders WHERE fi = ?", (fi, ))
+    cursor.execute("DELETE FROM elders WHERE fi = ?", (fi,))
     base.commit()
+    return bool(len(result.fetchall()))
