@@ -12,7 +12,7 @@ from scripts.vk_parsing import get_request_posts, get_du_posts
 from handlers.fsm import FSM_activity, FSM_start
 from scripts.sql import get_profile
 from scripts.excel import get_group_by_fio, get_course_by_fio, from_du
-from scripts.activity import list_of_data, data2
+from scripts.activity import balls,outprint
 request_posts = list()
 du_posts = list()
 
@@ -38,7 +38,7 @@ async def activity(message: types.Message):
         await message.answer('Введите фамилию и имя человека', reply_markup=someone_points_markup())
         await FSM_activity.someone_points.set()
     if message.text == 'Общий рейтинг':
-        await message.answer('Тут должен быть список студнтов с 1 по 10 место', reply_markup=top_students_markup())
+        await message.answer(outprint(balls()[0],0,10), reply_markup=top_students_markup())
         await FSM_activity.top_students.set()
     if message.text == 'Вернуться в меню':
         fio = get_profile(message.from_user.id)
@@ -116,7 +116,7 @@ async def delete_msg_callback(call: types.CallbackQuery):
 
 async def someone_points(message: types.Message):
     if is_a_student_by_fi(message.text):
-        await message.answer(f'У {message.text} {data2[message.text][0]} баллов и он на {data2[message.text][1]} месте')
+        await message.answer(f'У {message.text} {balls()[1][message.text][0]} баллов и он на {balls()[1][message.text][1]} месте')
     elif message.text == 'Назад в активность':
         await message.answer(
             'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы',
@@ -128,13 +128,13 @@ async def someone_points(message: types.Message):
 
 async def top_students(message: types.Message):
     if message.text == '1-10 место':
-        rating = list_of_data[0:9]
+        rating = outprint(balls()[0],0,10)
         await message.answer(rating)
     if message.text == '11-20 место':
-        rating = list_of_data[10:19]
+        rating = outprint(balls()[0],10,20)
         await message.answer(rating)
     if message.text == '21-30 место':
-        rating = list_of_data[20:29]
+        rating = outprint(balls()[0],20,30)
         await message.answer(rating)
     if message.text == 'Назад в активность':
         await message.answer(

@@ -1,6 +1,6 @@
 import openpyxl
 
-if __name__ == "__main__":
+def balls():
     book = openpyxl.open("activ.xlsx", data_only = True)
     book2 = openpyxl.open("activ2.xlsx", data_only = True)
     sheets=[book.worksheets[1],book.worksheets[2]]
@@ -19,14 +19,20 @@ if __name__ == "__main__":
     n=1
     
     list_of_data.sort(key=lambda i: i[n],reverse=True)
+    data3 = data.copy()
     i = 1
     for step in list_of_data:
         step=step.append(f"№{i}")
         i+=1
-    for person in data:
+    for person in data3:
         for info in list_of_data:
             data.update(person = (info[1],info[2]))
-    data2 ={}
-    for info in list_of_data:
-        data2[info[0]] = (info[1],info[2])
-    print(data2)
+    return list_of_data,data
+
+def outprint(list_of_data,start,end):
+    for i in range(start,end):
+        surname = list_of_data[i][0].split()[0]
+        name = list_of_data[i][0].split()[1]
+        outpr += f"{surname}  {name}:{list_of_data[i][1]} баллов,{list[i][2]} место \n"
+    return outpr
+    
