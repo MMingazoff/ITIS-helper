@@ -16,9 +16,7 @@ def get_index(group,sheet):
 def get_path(group):
     courses = {1:'1 курс.xlsx',2:'2 курс.xlsx',3:'3 курс.xlsx',4:'4 курс.xlsx','Магистры':'Магистры'}
     path = os.path.abspath(__file__)[:-20] + 'data/timetable/'
-    return f'{path}{courses[get_course(group)]}'
-
-
+    return  f'{path}{courses[get_course(group)]}'
 
 def get_day_index():
     return datetime.datetime.today().weekday()
