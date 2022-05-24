@@ -1,7 +1,8 @@
 from aiogram import types, Dispatcher
 from keyboards import menu_markup, timetable_markup, study_markup, help_markup, activity_markup, guide_markup, \
     swap_profile_markup
-from scripts import *
+from scripts.excel import get_group_by_fio, get_course_by_fio, is_a_student_by_fio
+from scripts.sql import set_profile, get_profile
 from handlers.fsm import FSM_start, FSM_study, FSM_guide, FSM_helps, FSM_activity, FSM_timetable
 
 

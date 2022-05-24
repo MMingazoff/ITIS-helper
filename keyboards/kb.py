@@ -48,13 +48,13 @@ def study_markup(course: str):
 
 def help_markup():
     """Кнопки для помощи"""
+    links = KeyboardButton('Полезные ссылки')
     list_group = KeyboardButton('Список моей группы')
-    deanery = KeyboardButton('Связь с деканатом')
     elders = KeyboardButton('Список старост')
     wishes = KeyboardButton('Ваши пожелания для бота')
     back_to_menu = KeyboardButton('Вернуться в меню')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row(list_group, elders).row(deanery, wishes).row(back_to_menu)
+    keyboard.row(links, elders).row(list_group, wishes).row(back_to_menu)
     return keyboard
 
 
