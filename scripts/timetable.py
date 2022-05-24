@@ -1,12 +1,15 @@
 import openpyxl
 import datetime
 import os
+
+
 def get_course(group):
     book = openpyxl.open(os.path.abspath(__file__)[:-20] + 'data/itis_groups.xlsx', read_only=True)
     sheet = book.active
     for index in range(2,58):
         if sheet[index][0].value == group:
             return sheet[index][2].value
+    return 'aboba'
 
 def get_index(group,sheet):
     for index in range(3,14):
@@ -34,7 +37,7 @@ def get_lessons_by_day(group,sheet,day):
 def time_in_range(start, end, current):
     return start <= current <= end
 
-def get_week_timetable(group: str) -> str:
+def get_week_timetable(group: str):
     book = openpyxl.open(get_path(group), read_only=True)
     sheet = book.active
     monday = 'Понедельник\n'
@@ -46,7 +49,7 @@ def get_week_timetable(group: str) -> str:
     days = [monday,thues,Wednesday,Thursday,Friday,Saturday]
     for index in range(len(days)):
         days[index] += get_lessons_by_day(group,sheet,index)
-    return f'{days[0]}\n{days[1]}\n{days[2]}\n{days[3]}\n{days[4]}\n{days[5]}'
+    return (days[0], days[1], days[2], days[3], days[4], days[5])
 
 
 
