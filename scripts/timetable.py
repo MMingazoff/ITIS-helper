@@ -46,7 +46,7 @@ def get_week_timetable(group: str) -> str:
     days = [monday,thues,Wednesday,Thursday,Friday,Saturday]
     for index in range(len(days)):
         days[index] += get_lessons_by_day(group,sheet,index)
-    return days[0],days[1],days[2],days[3],days[4],days[5]
+    return f'{days[0]}\n{days[1]}\n{days[2]}\n{days[3]}\n{days[4]}\n{days[5]}'
 
 
 
