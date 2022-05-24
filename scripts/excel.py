@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from typing import List
 
 """Скрипты для excel"""
 
@@ -35,7 +36,7 @@ def get_group_by_fi(fi: str) -> str:
         profile = df_students[df_students['FI'] == fi]
         group = tuple(profile['Group'])[0]
         return str(group)
-    return f'Такого студента нет'
+    return 'Такого студента нет'
 
 
 def get_course_by_fi(fi: str) -> str:
@@ -54,6 +55,12 @@ def get_group_by_fio(fio: str) -> str:
         group = tuple(profile['Group'])[0]
         return str(group)
     return f'Такого студента нет'
+
+
+def get_all_group_members(group: str) -> List[str]:
+    """Достает всех людей с группы"""
+    members = df_students[df_students['Group'] == group]
+    return list(members['FIO'])
 
 
 def get_course_by_fio(fio: str) -> str:
