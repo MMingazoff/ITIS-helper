@@ -9,8 +9,11 @@ from scripts.excel import get_group_by_fio, get_course_by_fio, is_a_group, is_a_
 
 async def timetable(message: types.Message):
     if message.text == 'Расписание на неделю':
-        text = get_week_timetable(str(message.from_user))
-        await message.answer(text)
+        fio = get_profile(message.from_user.id)
+        group = get_group_by_fio(fio)
+        text = get_week_timetable(group)
+        for day in text:
+            await message.answer(day)
     if message.text == 'Расписание на день':
         await message.answer('Выбери нужный день', reply_markup=today_tomorrow_markup())
         await FSM_timetable.today_tomorrow.set()
