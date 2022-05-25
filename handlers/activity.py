@@ -138,14 +138,14 @@ async def someone_points(message: types.Message):
 async def top_students(message: types.Message):
     start = time()
     if message.text == '1-10 место':
-        rating_out = '\n'.join(f"{place}. {fio}, {balls} баллов" for place, (fio, balls) in rating[:10])
+        rating_out = '\n'.join(f"{place}. {' '.join(fio.split()[:2])}, {balls} баллов" for place, (fio, balls) in rating[:10])
         await message.answer(rating_out)
         print(time() - start)
     if message.text == '11-20 место':
-        rating_out = '\n'.join(f"{place}. {fio}, {balls} баллов" for place, (fio, balls) in rating[10:20])
+        rating_out = '\n'.join(f"{place}. {' '.join(fio.split()[:2])}, {balls} баллов" for place, (fio, balls) in rating[10:20])
         await message.answer(rating_out)
     if message.text == '21-30 место':
-        rating_out = '\n'.join(f"{place}. {fio}, {balls} баллов" for place, (fio, balls) in rating[20:30])
+        rating_out = '\n'.join(f"{place}. {' '.join(fio.split()[:2])}, {balls} баллов" for place, (fio, balls) in rating[20:30])
         await message.answer(rating_out)
     if message.text == 'Назад в активность':
         await message.answer(
