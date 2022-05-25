@@ -69,8 +69,11 @@ async def swap_profile(message: types.Message):
         await message.answer(f'Возможно вы ошиблись, попробуйте ввести ФИО ещё раз', reply_markup=swap_profile_markup())
 
 
-def register_handlers(dp: Dispatcher):
+def register_commands(dp: Dispatcher):
     dp.register_message_handler(start_bot, commands=['start', 'help'], state="*")
+
+
+def register_handlers(dp: Dispatcher):
     dp.register_message_handler(enter_fio, state=FSM_start.fio)
     dp.register_message_handler(menu, state=FSM_start.menu)
     dp.register_message_handler(swap_profile, state=FSM_start.swap_profile)

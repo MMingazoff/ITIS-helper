@@ -113,8 +113,11 @@ async def del_cafe_handler(message: types.Message):
     await message.answer("не сделано")
 
 
-def register_handlers(dp: Dispatcher):
+def register_commands(dp: Dispatcher):
     dp.register_message_handler(admin_start, state='*', commands=['admin', 'cancel'], is_chat_admin=True)
+
+
+def register_handlers(dp: Dispatcher):
     dp.register_message_handler(edit_section, state=FSM_admin.is_admin)
     # регистрация каждой секции
     dp.register_message_handler(edit_links, state=FSM_admin.useful_links)

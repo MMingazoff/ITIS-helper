@@ -43,7 +43,7 @@ async def activity(message: types.Message):
         await message.answer('Введите фамилию и имя человека', reply_markup=someone_points_markup())
         await FSM_activity.someone_points.set()
     if message.text == 'Общий рейтинг':
-        await message.answer('d', reply_markup=top_students_markup())  # outprint(balls()[0],0,10),
+        await message.answer('С какого по какое место тебе нужно?', reply_markup=top_students_markup())
         await FSM_activity.top_students.set()
     if message.text == 'Вернуться в меню':
         fio = get_profile(message.from_user.id)
