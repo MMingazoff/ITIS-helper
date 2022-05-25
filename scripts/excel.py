@@ -30,6 +30,13 @@ def is_a_group(group_number: str) -> bool:
     return False
 
 
+def get_fio_by_fi(fi: str) -> str:
+    """Возвращает ФИО по ФИ"""
+    profile = df_students[df_students['FI'] == fi]
+    fio = tuple(profile['FIO'])[0]
+    return str(fio)
+
+
 def get_group_by_fi(fi: str) -> str:
     """Узнать группу по ФИ"""
     if is_a_student_by_fi(fi):
