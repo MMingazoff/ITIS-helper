@@ -1,38 +1,32 @@
 import openpyxl
+import os
 
-def balls():
-    book = openpyxl.open("activ.xlsx", data_only = True)
-    book2 = openpyxl.open("activ2.xlsx", data_only = True)
-    sheets=[book.worksheets[1],book.worksheets[2]]
-    sheets2=[book2.worksheets[0]]
-    data={}
+
+def get_data():
+    path = os.path.abspath(__file__)[:-19]
+    book = openpyxl.open(path + "data/activ.xlsx", data_only=True)
+    book2 = openpyxl.open(path + "data/activ2.xlsx", data_only=True)
+    sheets = [book.worksheets[1], book.worksheets[2]]
+    sheets2 = [book2.worksheets[0]]
+    data = {}
     for sheet in sheets:
-          for name,balls in sheet.iter_rows(min_row=6,min_col=2,max_col=3):
-            data[name.value]= balls.value + data.get(name.value,0)
-    for name,balls in sheets2[0].iter_rows(min_row=2,min_col=2,max_col=3):
-        data[name.value]=balls.value + data.get(name.value,0)
-    list_of_data = []
-    for key in data:
-        if key!=None:
-            list_of_small_data=[key,data[key]]
-            list_of_data.append(list_of_small_data)
-    n=1
-    
-    list_of_data.sort(key=lambda i: i[n],reverse=True)
-    data3 = data.copy()
-    i = 1
-    for step in list_of_data:
-        step=step.append(f"№{i}")
-        i+=1
-    for person in data3:
-        for info in list_of_data:
-            data.update(person = (info[1],info[2]))
-    return list_of_data,data
+        for name, balls in sheet.iter_rows(min_row=6, min_col=2, max_col=3):
+            data[name.value] = balls.value + data.get(name.value, 0)
+    for name, balls in sheets2[0].iter_rows(min_row=2, min_col=2, max_col=3):
+        data[name.value] = balls.value + data.get(name.value, 0)
+    return data
 
-def outprint(list_of_data,start,end):
-    for i in range(start,end):
-        surname = list_of_data[i][0].split()[0]
-        name = list_of_data[i][0].split()[1]
-        outpr += f"{surname}  {name}:{list_of_data[i][1]} баллов,{list[i][2]} место \n"
-    return outpr
-    
+
+def sorted_balls():
+    data = get_data()
+    sorted_students = list(enumerate(sorted([(k,v) for k,v in data.items() if k], key=lambda el: el[1], reverse=True), 1))
+    return sorted_students
+
+
+def get_new_data():
+    new_data = {}
+    sorted_data = sorted_balls()
+    for place, (fio, balls) in sorted_data:
+        new_data[fio] = (balls, place)
+    return new_data
+

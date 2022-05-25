@@ -11,10 +11,14 @@ from scripts.excel import is_a_student_by_fi
 from scripts.vk_parsing import get_request_posts, get_du_posts
 from handlers.fsm import FSM_activity, FSM_start
 from scripts.sql import get_profile
-from scripts.excel import get_group_by_fio, get_course_by_fio, from_du
-from scripts.activity import balls,outprint
+from scripts.excel import get_group_by_fio, get_course_by_fio, from_du, get_fio_by_fi
+from scripts.activity import sorted_balls, get_new_data
+from time import time
+
 request_posts = list()
 du_posts = list()
+rating = sorted_balls()
+students = get_new_data()
 
 
 async def activity(message: types.Message):
@@ -32,13 +36,14 @@ async def activity(message: types.Message):
                                  parse_mode=types.ParseMode.HTML,
                                  disable_web_page_preview=True)
     if message.text == 'Я в рейтинге':
-        ur_place = 'Тут будут твое место и твои баллы'
-        await message.answer(ur_place)
+        fio = get_profile(message.from_user.id)
+        balls, place = students[fio]
+        await message.answer(f"У тебя {balls} баллов\nТы на {place} месте в топе")
     if message.text == 'Узнать баллы человека':
         await message.answer('Введите фамилию и имя человека', reply_markup=someone_points_markup())
         await FSM_activity.someone_points.set()
     if message.text == 'Общий рейтинг':
-        await message.answer(outprint(balls()[0],0,10), reply_markup=top_students_markup())
+        await message.answer('d', reply_markup=top_students_markup())  # outprint(balls()[0],0,10),
         await FSM_activity.top_students.set()
     if message.text == 'Вернуться в меню':
         fio = get_profile(message.from_user.id)
@@ -116,7 +121,11 @@ async def delete_msg_callback(call: types.CallbackQuery):
 
 async def someone_points(message: types.Message):
     if is_a_student_by_fi(message.text):
-        await message.answer(f'У {message.text} {balls()[1][message.text][0]} баллов и он на {balls()[1][message.text][1]} месте')
+        fio = get_fio_by_fi(message.text)
+        balls, place = students[fio]
+        await message.answer(f"{message.text} на {place} месте в топе\nУ него/неё {balls} баллов",
+                             reply_markup=activity_markup())
+        await FSM_activity.activity.set()
     elif message.text == 'Назад в активность':
         await message.answer(
             'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы',
@@ -127,15 +136,17 @@ async def someone_points(message: types.Message):
 
 
 async def top_students(message: types.Message):
+    start = time()
     if message.text == '1-10 место':
-        rating = outprint(balls()[0],0,10)
-        await message.answer(rating)
+        rating_out = '\n'.join(f"{place}. {fio}, {balls} баллов" for place, (fio, balls) in rating[:10])
+        await message.answer(rating_out)
+        print(time() - start)
     if message.text == '11-20 место':
-        rating = outprint(balls()[0],10,20)
-        await message.answer(rating)
+        rating_out = '\n'.join(f"{place}. {fio}, {balls} баллов" for place, (fio, balls) in rating[10:20])
+        await message.answer(rating_out)
     if message.text == '21-30 место':
-        rating = outprint(balls()[0],20,30)
-        await message.answer(rating)
+        rating_out = '\n'.join(f"{place}. {fio}, {balls} баллов" for place, (fio, balls) in rating[20:30])
+        await message.answer(rating_out)
     if message.text == 'Назад в активность':
         await message.answer(
             'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы',
