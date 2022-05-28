@@ -13,6 +13,7 @@ def get_course(group: str) -> str:
     for index in range(2, 58):
         if sheet[index][0].value == group:
             return sheet[index][2].value
+    book.close()
 
 
 def get_index(group: str, sheet) -> int:
@@ -39,8 +40,9 @@ def get_lessons_by_day(group: str, sheet, day: int) -> str:
     for i in range(2 + day * 7, day * 7 + 9):
         if sheet[i][index].value:
             text += f'{str(sheet[i][2].value)}\n{str(sheet[i][index].value)}\n'
-    return text
-
+    if len(text) > 1:
+        return text
+    return f'у {group} группы нет пар'
 
 def get_week_timetable(group: str) -> tuple:
     book = openpyxl.open(get_path(group), read_only=True)
@@ -53,6 +55,7 @@ def get_week_timetable(group: str) -> tuple:
             if sheet[index][index_of_group].value:
                 text += f'{sheet[index][2].value}\n{sheet[index][index_of_group].value}\n\n'
         days.append(text)
+    book.close()
     return days[0], days[1], days[2], days[3], days[4], days[5]
 
 
@@ -70,21 +73,23 @@ def get_now_lesson(group: str) -> str:
             end = datetime.time(int(end_time[:2]), int(end_time[-2:]))
             if check_time_in_range(start, end, time):
                 return f'{sheet[i][2].value}\n{sheet[i][index].value}'
+    book.close()
     return 'у вас нет пары сейчас'
 
 
 def get_today_lessons(group: str) -> str:
     book = openpyxl.open(get_path(group), read_only=True)
     sheet = book.active
-    return get_lessons_by_day(group, sheet, day=get_day_index())
+    text = get_lessons_by_day(group, sheet, day=get_day_index())
+    book.close()
+    return text
 
 
 def get_tomorrow_lessons(group: str) -> str:
     book = openpyxl.open(get_path(group), read_only=True)
     sheet = book.active
-    return get_lessons_by_day(group, sheet, day=get_day_index()+1)
+    text = get_lessons_by_day(group, sheet, day=get_day_index()+1)
+    book.close()
+    return text
 
 
-def get_today_lessons_by_group(group: str) -> str:
-
-    return get_today_lessons(group)
