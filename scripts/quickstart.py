@@ -4,11 +4,8 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 import pandas as pd
-
-
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
-
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID_request_activ = '1qPCCiMbWs1EZaK3hNBHvpn86uNx8OmN7UpWSqfv6_jQ'
 SAMPLE_SPREADSHEET_ID_du_active = '10AcN0Ygof1TLxuMlBXPK9m-I6vVxpqB5AulkEgw0mBc'
@@ -41,8 +38,6 @@ def main():
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
-
-    
     service = build('sheets', 'v4', credentials=creds)
         # Call the Sheets API
     global sheet
@@ -84,64 +79,5 @@ def download_raskraska():
                 dataFrame_of_raskraska[0].to_excel(writer, sheet_name=SAMPLE_RANGE_NAME_raskraska[0], index=False, header=False)    
         for dataframe,SAMPLE in zip(dataFrame_of_raskraska[1:],SAMPLE_RANGE_NAME_raskraska[1:]):
             with pd.ExcelWriter(path + "data/raskraska.xlsx", engine='openpyxl', mode='a') as writer:
-                dataframe.to_excel(writer, sheet_name=SAMPLE, index=False, header=False)         
-#         result_request_activ = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID_request_activ,
-#                                     range=SAMPLE_RANGE_NAME_request_activ).execute()
-#         result2_request_activ = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID_request_activ,
-#                                     range=SAMPLE_RANGE_NAME_request_activ).execute()
-#         result_du_active = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID_du_active,
-#                                     range=SAMPLE_RANGE_NAME_du_active).execute()
-#         result_raskraska_1_course = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID_raskraska,
-#                                     range=SAMPLE_RANGE_NAME_raskraska_1_course).execute()
-#         result_raskraska_2_course = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID_raskraska,
-#                                     range=SAMPLE_RANGE_NAME_raskraska_2_course).execute()
-#         result_raskraska_3_course = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID_raskraska,
-#                                     range=SAMPLE_RANGE_NAME_raskraska_3_course).execute()
-#         result_raskraska_4_course = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID_raskraska,
-#                                     range=SAMPLE_RANGE_NAME_raskraska_4_course).execute()
-#         result_raskraska_M_course = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID_raskraska,
-#                                     range=SAMPLE_RANGE_NAME_raskraska_M_course).execute()
-#         values_request_activ = result_request_activ.get('values', [])
-#         values2_request_activ = result2_request_activ.get('values', [])
-#         values_du_active = result_du_active.get('values', [])
-#         values_raskraska_1_course = result_raskraska_1_course.get('values', [])
-#         values_raskraska_2_course = result_raskraska_2_course.get('values', [])
-#         values_raskraska_3_course = result_raskraska_3_course.get('values', [])
-#         values_raskraska_4_course = result_raskraska_4_course.get('values', [])
-#         values_raskraska_M_course = result_raskraska_M_course.get('values', [])
-        
-# # Generate dataframe from list and write to xlsx.
-#         df1_request_activ = pd.DataFrame(values_request_activ)
-#         df2_request_activ = pd.DataFrame(values2_request_activ)
-#         df3_du_active = pd.DataFrame(values_du_active)
-#         df1_raskraska = pd.DataFrame(values_raskraska_1_course)
-#         df2_raskraska = pd.DataFrame(values_raskraska_2_course)
-#         df3_raskraska = pd.DataFrame(values_raskraska_3_course)
-#         df4_raskraska = pd.DataFrame(values_raskraska_4_course)
-#         dfM_raskraska = pd.DataFrame(values_raskraska_M_course)
-        
-#         with pd.ExcelWriter("C:/ITIS-helper-1/data/du_active.xlsx") as writer:
-#              df3_du_active.to_excel(writer, sheet_name = SAMPLE_RANGE_NAME_du_active, index=False, header=False)
-#         with pd.ExcelWriter("C:/ITIS-helper-1/data/request_active.xlsx") as writer:
-#             df1_request_activ.to_excel(writer, sheet_name = SAMPLE_RANGE_NAME_request_activ[0:23], index=False, header=False)
-#         with pd.ExcelWriter("C:/ITIS-helper-1/data/request_active.xlsx", engine='openpyxl', mode='a') as writer:  
-#             df2_request_activ.to_excel(writer, sheet_name=SAMPLE_RANGE_NAME_request_activ2[0:23], index=False, header=False)
-#         with pd.ExcelWriter("C:/ITIS-helper-1/data/raskraska.xlsx") as writer:
-#             df1_raskraska.to_excel(writer, sheet_name=SAMPLE_RANGE_NAME_raskraska_1_course[0:7], index=False, header=False)   
-#         with pd.ExcelWriter("C:/ITIS-helper-1/data/raskraska.xlsx", engine='openpyxl', mode='a') as writer:
-#             df2_raskraska.to_excel(writer, sheet_name=SAMPLE_RANGE_NAME_raskraska_2_course[0:7], index=False, header=False)
-#         with pd.ExcelWriter("C:/ITIS-helper-1/data/raskraska.xlsx", engine='openpyxl', mode='a') as writer:
-#             df3_raskraska.to_excel(writer, sheet_name=SAMPLE_RANGE_NAME_raskraska_3_course[0:7], index=False, header=False)
-#         with pd.ExcelWriter("C:/ITIS-helper-1/data/raskraska.xlsx", engine='openpyxl', mode='a') as writer:
-#             df4_raskraska.to_excel(writer, sheet_name=SAMPLE_RANGE_NAME_raskraska_4_course[0:7], index=False, header=False)
-#         with pd.ExcelWriter("C:/ITIS-helper-1/data/raskraska.xlsx", engine='openpyxl', mode='a') as writer:
-#             dfM_raskraska.to_excel(writer, sheet_name=SAMPLE_RANGE_NAME_raskraska_M_course[0:9], index=False, header=False)
-    
-
-
-if __name__ == '__main__':
-    main()
-    download_du_activ()
-    download_request_activ()
-    download_raskraska()
+                dataframe.to_excel(writer, sheet_name=SAMPLE, index=False, header=False)
     
