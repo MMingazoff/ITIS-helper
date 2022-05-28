@@ -35,7 +35,6 @@ def get_edit_timetable(sheet_names):
 
 
 path = os.path.abspath(__file__)[:-27] + 'data/timetable/'
-print(path)
 sheet = {
     '1 курс': '1course', '2 курс': '2course', '3 курс': '3course', '4 курс': '4course', 'Магистры': 'masters'}
 get_edit_timetable(sheet)

@@ -86,4 +86,3 @@ def get_tomorrow_lessons(group: str) -> str:
 
 def get_today_lessons_by_group(group: str) -> str:
     return get_today_lessons(group)
-
