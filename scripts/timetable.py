@@ -42,17 +42,18 @@ def get_lessons_by_day(group: str, sheet, day: int) -> str:
     return text
 
 
-def get_week_timetable(group: str) -> str:
+def get_week_timetable(group: str) -> tuple:
     book = openpyxl.open(get_path(group), read_only=True)
     sheet = book.active
-    text = ''
     index_of_group = get_index(group, sheet)
+    days = []
     for index_of_day in range(2, 44, 7):
-        text += f'{sheet[index_of_day][1].value}\n'
+        text = f'{sheet[index_of_day][1].value}\n'
         for index in range(index_of_day, index_of_day+7):
             if sheet[index][index_of_group].value:
                 text += f'{sheet[index][2].value}\n{sheet[index][index_of_group].value}\n\n'
-    return text
+        days.append(text)
+    return days[0], days[1], days[2], days[3], days[4], days[5]
 
 
 def get_now_lesson(group: str) -> str:
@@ -85,4 +86,6 @@ def get_tomorrow_lessons(group: str) -> str:
 
 
 def get_today_lessons_by_group(group: str) -> str:
-    return get_today_lessons(group)
+    book = openpyxl.open(get_path(group), read_only=True)
+    sheet = book.active
+    return get_lessons_by_day(group, sheet, day=get_day_index())
