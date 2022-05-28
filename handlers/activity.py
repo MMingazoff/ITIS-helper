@@ -38,7 +38,7 @@ async def activity(message: types.Message):
     if message.text == 'Я в рейтинге':
         fio = get_profile(message.from_user.id)
         balls, place = students[fio]
-        await message.answer(f"У тебя {balls} баллов\nТы на {place} месте в топе")
+        await message.answer(f"Ты на {place} месте в топе\nУ тебя {balls} баллов")
     if message.text == 'Узнать баллы человека':
         await message.answer('Введите фамилию и имя человека', reply_markup=someone_points_markup())
         await FSM_activity.someone_points.set()
