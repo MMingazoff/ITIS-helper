@@ -9,16 +9,9 @@ def cell_to_row_column(cell):
     return row, column
 
 
-
-
-
-path = os.path.abspath(__file__)[:-27] + 'data/timetable/'
-
-print(path)
-sheet_name=['1 курс','2 курс','3 курс','4 курс','Магистры']
-def get_timetable(curse):
+def get_timetable(curse, name):
     wb = load_workbook(filename=path + 'timetable.xlsx', data_only=True)['1 курс']
-    df = pd.read_excel(path + 'timetable.xlsx', sheet_name=['1 курс','2 курс','3 курс','4 курс','Магистры'])
+    df = pd.read_excel(path + 'timetable.xlsx', sheet_name=['1 курс', '2 курс', '3 курс', '4 курс', 'Магистры'])
     merged_cells = wb.merged_cells.ranges
     df = df.get(curse)
     for i in merged_cells:
@@ -33,14 +26,16 @@ def get_timetable(curse):
         else:
             for row in range(first_cell_row, last_cell_row + 1):
                 df.loc[row][first_cell_column:last_cell_column + 1] = df.loc[first_cell_row][first_cell_column]
-    df.to_excel(path+f'{curse}.xlsx')
+    df.to_excel(path+f'{name}.xlsx')
 
 
+def get_edit_timetable(sheet_names):
+    for key in sheet_names:
+        get_timetable(key, sheet_names[key])
 
-def get_edit_timetable():
-    get_timetable(sheet_name[0])
-    get_timetable(sheet_name[1])
-    get_timetable(sheet_name[2])
-    get_timetable(sheet_name[3])
-    get_timetable(sheet_name[4])
-get_edit_timetable()
+
+path = os.path.abspath(__file__)[:-27] + 'data/timetable/'
+print(path)
+sheet = {
+    '1 курс': '1course', '2 курс': '2course', '3 курс': '3course', '4 курс': '4course', 'Магистры': 'masters'}
+get_edit_timetable(sheet)
