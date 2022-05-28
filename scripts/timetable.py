@@ -92,4 +92,3 @@ def get_tomorrow_lessons(group: str) -> str:
     book.close()
     return text
 
-
