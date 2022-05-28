@@ -86,6 +86,5 @@ def get_tomorrow_lessons(group: str) -> str:
 
 
 def get_today_lessons_by_group(group: str) -> str:
-    book = openpyxl.open(get_path(group), read_only=True)
-    sheet = book.active
-    return get_lessons_by_day(group, sheet, day=get_day_index())
+
+    return get_today_lessons(group)
