@@ -12,13 +12,13 @@ from scripts.vk_parsing import get_request_posts, get_du_posts
 from handlers.fsm import FSM_activity, FSM_start
 from scripts.sql import get_profile
 from scripts.excel import get_group_by_fio, get_course_by_fio, from_du, get_fio_by_fi
-from scripts.activity import sorted_balls, get_new_data
+from scripts.activity import sorted_balls, get_students_balls_place
 from time import time
 
 request_posts = list()
 du_posts = list()
 rating = sorted_balls()
-students = get_new_data()
+students = get_students_balls_place()
 
 
 async def activity(message: types.Message):
