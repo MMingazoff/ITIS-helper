@@ -73,9 +73,10 @@ def add_link(name: str, link: str) -> bool:
 def del_link(name: str) -> bool:
     """Удаляет ссылку из БД по названию"""
     result = cursor.execute("SELECT * FROM links WHERE name = ?", (name, ))
+    result = result.fetchall()
     cursor.execute("DELETE FROM links WHERE name = ?", (name, ))
     base.commit()
-    return not bool(len(result.fetchall()))
+    return bool(result)
 
 
 def get_elders() -> List[Tuple[str, str, str]]:
@@ -101,6 +102,7 @@ def add_elder(fi: str, contact: str) -> bool:
 def del_elder(fi: str) -> bool:
     """Удаляет старосту из БД по имени"""
     result = cursor.execute("SELECT * FROM elders WHERE fi = ?", (fi, ))
+    result = result.fetchall()
     cursor.execute("DELETE FROM elders WHERE fi = ?", (fi,))
     base.commit()
-    return bool(len(result.fetchall()))
+    return bool(len(result))

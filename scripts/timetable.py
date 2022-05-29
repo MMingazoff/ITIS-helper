@@ -44,6 +44,7 @@ def get_lessons_by_day(group: str, sheet, day: int) -> str:
         return text
     return f'у {group} группы нет пар'
 
+
 def get_week_timetable(group: str) -> tuple:
     book = openpyxl.open(get_path(group), read_only=True)
     sheet = book.active
