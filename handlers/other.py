@@ -7,12 +7,15 @@ from keyboards.kb import menu_markup
 
 async def echo_message(message: types.Message):
     fio = get_profile(message.from_user.id)
-    course = get_course_by_fio(fio)
-    group = get_group_by_fio(fio)
-    await message.answer(
-        f'Привет, {fio}, я готов тебе помогать\n\nФИО: {fio} \nКурс: {course} \nГруппа: {group} \nЧто тебе нужно?',
-        reply_markup=menu_markup())
-    await FSM_start.menu.set()
+    if fio:
+        course = get_course_by_fio(fio)
+        group = get_group_by_fio(fio)
+        await message.answer(
+            f'Привет, {fio}, я готов тебе помогать\n\nФИО: {fio} \nКурс: {course} \nГруппа: {group} \nЧто тебе нужно?',
+            reply_markup=menu_markup())
+        await FSM_start.menu.set()
+    else:
+        await message.answer('Вы не зарегистрированы.\nВведите /start чтобы начать')
 
 
 def register_handlers(dp: Dispatcher):

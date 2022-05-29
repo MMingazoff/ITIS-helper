@@ -114,7 +114,7 @@ async def del_cafe_handler(message: types.Message):
 
 
 def register_commands(dp: Dispatcher):
-    dp.register_message_handler(admin_start, state='*', commands=['admin', 'cancel'], is_chat_admin=True)
+    dp.register_message_handler(admin_start, state='*', commands=['admin', 'cancel'], is_chat_admin=True, chat_id=-1001603217169)
 
 
 def register_handlers(dp: Dispatcher):

@@ -44,7 +44,7 @@ async def wishes(message: types.Message):
         await FSM_helps.help.set()
     else:
         await message.answer(f'Мы рассмотрим вашу идею', reply_markup=help_markup())
-        await bot.send_message(text=f'{message.from_user.mention}\n{message.text}', chat_id=-733679035)  # группа с ботом
+        await bot.send_message(text=f'{message.from_user.mention}\n{message.text}', chat_id=-1001603217169)  # группа с ботом
         await FSM_helps.help.set()
 
 

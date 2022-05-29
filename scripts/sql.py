@@ -27,7 +27,10 @@ def set_profile(user_id: int, fio: str) -> None:
 def get_profile(user_id: int) -> str:
     """Возвращает ФИО студента, на который зашел юзер"""
     result = cursor.execute("SELECT fio FROM users WHERE user_id = ?", (user_id,))
-    return result.fetchone()[0]
+    result = result.fetchone()
+    if result:
+        return result[0]
+    return ''
 
 
 def user_in_db(user_id: int) -> bool:
