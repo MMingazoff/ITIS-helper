@@ -43,9 +43,6 @@ def get_lessons_by_day(group: str, sheet, day: int) -> str or bool:
     index = get_index(group, sheet)
     if day == 6:
         return 'Воскресенье - выходной день!'
-    check = check_timetable(sheet, day, index)
-    if len(check):
-        return check
     for i in range(2 + day * 7, day * 7 + 9):
         if sheet[i][index].value:
             text += f'{str(sheet[i][2].value)}\n{str(sheet[i][index].value)}\n'
