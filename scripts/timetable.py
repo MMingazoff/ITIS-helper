@@ -3,6 +3,10 @@ import datetime
 import os
 
 
+def get_time_now():
+    return datetime.datetime.now().time()
+
+
 def check_time_in_range(start: datetime, end: datetime, current: datetime) -> bool:
     return start <= current <= end
 
@@ -32,17 +36,23 @@ def get_day_index() -> int:
     return datetime.datetime.today().weekday()
 
 
-def get_lessons_by_day(group: str, sheet, day: int) -> str:
+def get_lessons_by_day(group: str, sheet, day: int) -> str or bool:
     text = ''
+    if day == 7:
+        day = 0
     index = get_index(group, sheet)
     if day == 6:
-        return 'воскресенье - выходной день!'
+        return 'Воскресенье - выходной день!'
+    check = check_timetable(sheet, day, index)
+    if len(check):
+        return check
     for i in range(2 + day * 7, day * 7 + 9):
         if sheet[i][index].value:
             text += f'{str(sheet[i][2].value)}\n{str(sheet[i][index].value)}\n'
-    if len(text) > 1:
+    if len(text):
         return text
-    return f'у {group} группы нет пар'
+    return False
+
 
 def get_week_timetable(group: str) -> tuple:
     book = openpyxl.open(get_path(group), read_only=True)
@@ -54,20 +64,25 @@ def get_week_timetable(group: str) -> tuple:
         for index in range(index_of_day, index_of_day+7):
             if sheet[index][index_of_group].value:
                 text += f'{sheet[index][2].value}\n{sheet[index][index_of_group].value}\n\n'
+        if len(text) < 10:
+            text += 'Нет пар'
         days.append(text)
     book.close()
     return days[0], days[1], days[2], days[3], days[4], days[5]
 
 
 def get_now_lesson(group: str) -> str:
-    time = datetime.datetime.now().time()
+    time = get_time_now()
     book = openpyxl.open(get_path(group), read_only=True)
     sheet = book.active
     index = get_index(group, sheet)
     day = get_day_index()
     for i in range(2 + day * 7, day * 7 + 9):
-        if sheet[i][index].value is not None:
-            start_time = sheet[i-1][2].value[:5]
+        if sheet[i][index].value:
+            if (i - 2) % 7 > 0:
+                start_time = sheet[i-1][2].value[-5:]
+            else:
+                start_time = '08:00'
             start = datetime.time(int(start_time[:2]), int(start_time[-2:]))
             end_time = sheet[i][2].value[-5:]
             end = datetime.time(int(end_time[:2]), int(end_time[-2:]))
@@ -91,4 +106,3 @@ def get_tomorrow_lessons(group: str) -> str:
     text = get_lessons_by_day(group, sheet, day=get_day_index()+1)
     book.close()
     return text
-
