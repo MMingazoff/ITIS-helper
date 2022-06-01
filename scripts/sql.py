@@ -106,3 +106,24 @@ def del_elder(fi: str) -> bool:
     cursor.execute("DELETE FROM elders WHERE fi = ?", (fi,))
     base.commit()
     return bool(len(result))
+
+def new_column(name: str) -> None:
+    """Добавляет новый столбец в базу данных"""
+    try:
+        # Добавляет новый столбец в базу данных
+        cursor.execute("ALTER TABLE data add column 'name'")
+
+    except sqlite3.OperationalError:
+        print ('Имя столбца уже существует!')
+    else:
+        print ('Создание и добавление столбца!')
+
+def set_book(title: str, link: str) -> None:
+    """Добавляет книгу"""
+    cursor.execute("INSERT INTO books (title, link) VALUES (?,?)", (title, link))
+
+def get_book(title: str) -> str:
+    """Возвращает книгу"""
+    result = cursor.execute("SELECT link FROM books WHERE title = ?", (title,))
+    return result.fetchone()
+
