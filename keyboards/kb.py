@@ -17,10 +17,10 @@ def menu_markup():
 
 def timetable_markup():
     """Кнопки для расписания"""
-    timetable_week = KeyboardButton('Расписание на неделю')
-    what_lesson_now = KeyboardButton('Какая у меня сейчас пара')
-    timetable_day = KeyboardButton('Расписание на день')
-    timetable_group = KeyboardButton('Узнать пары у другого человека')
+    timetable_week = KeyboardButton('\U0001F4C5 Расписание на неделю')
+    what_lesson_now = KeyboardButton('\U00002757 Какая у меня сейчас пара')
+    timetable_day = KeyboardButton('\U00002753 Расписание на день')
+    timetable_group = KeyboardButton('\U0001F50E Узнать пары у другого человека')
     back_to_menu = KeyboardButton('\U0001F519 Вернуться в меню')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row(timetable_week, timetable_day).row(what_lesson_now, timetable_group).row(back_to_menu)
@@ -49,7 +49,7 @@ def study_markup(course: str):
 def help_markup():
     """Кнопки для помощи"""
     links = KeyboardButton('\U0001F517 Полезные ссылки')
-    list_group = KeyboardButton('\U0001F468 Список моей группы')
+    list_group = KeyboardButton('\U0001F46A Список моей группы')
     elders = KeyboardButton('\U0001F474 Список старост')
     wishes = KeyboardButton('\U0001F4EA Ваши пожелания для бота')
     back_to_menu = KeyboardButton('\U0001F519 Вернуться в меню')

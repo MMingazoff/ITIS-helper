@@ -8,21 +8,21 @@ from scripts.excel import get_group_by_fio, get_course_by_fio, is_a_group, is_a_
 
 
 async def timetable(message: types.Message):
-    if message.text == 'Расписание на неделю':
+    if message.text == '\U0001F4C5 Расписание на неделю':
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_week_timetable(group)
         for day in text:
             await message.answer(day)
-    if message.text == 'Расписание на день':
+    if message.text == '\U00002753 Расписание на день':
         await message.answer('Выбери нужный день', reply_markup=today_tomorrow_markup())
         await FSM_timetable.today_tomorrow.set()
-    if message.text == 'Какая у меня сейчас пара':
+    if message.text == '\U00002757 Какая у меня сейчас пара':
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_now_lesson(group)
         await message.answer(text)
-    if message.text == 'Узнать пары у другого человека':
+    if message.text == '\U0001F50E Узнать пары у другого человека':
         await message.answer('Введи номер группы или фамилию с именем', reply_markup=timetable_someone_markup())
         await FSM_timetable.someone_timetable.set()
 

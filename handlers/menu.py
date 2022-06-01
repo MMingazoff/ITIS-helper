@@ -22,7 +22,7 @@ async def enter_fio(message: types.Message):
             reply_markup=menu_markup())
         await FSM_start.menu.set()
     else:
-        await message.answer('Такого студента нету, или вы ошиблись c ФИО')
+        await message.answer('Такого студента нет, или вы ошиблись c ФИО')
         await FSM_start.fio.set()
 
 

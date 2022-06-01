@@ -8,7 +8,7 @@ from scripts.excel import get_group_by_fio, get_course_by_fio, get_all_group_mem
 
 
 async def help(message: types.Message):
-    if message.text == '\U0001F468 Список моей группы':
+    if message.text == '\U0001F46A Список моей группы':
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         # Для фото списка группы (пока нам не нужно)
