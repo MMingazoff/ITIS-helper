@@ -2,7 +2,7 @@ from aiogram import types, Dispatcher
 from keyboards import menu_markup
 from handlers.fsm import FSM_study, FSM_start
 from scripts.sql import get_profile
-from scripts.sql import get_book
+from scripts.sql import get_books
 from scripts.excel import get_group_by_fio, get_course_by_fio
 
 
@@ -16,11 +16,15 @@ async def subjects(message: types.Message):
             reply_markup=menu_markup())
         await FSM_start.menu.set()
     else:
-        books = get_book(message.text)
-        result = '\n'.join((link for link in books))
-        await message.answer(
-            f'Все учебники по {message.text}: \n{result}'
-        )
+        books = get_books(message.text)
+        try:
+            result = '\n'.join(link for link, *args in books)
+            await message.answer(
+                f'Учебники. {message.text}: \n{result}'
+            )
+        except TypeError:
+            await message.answer('Пока у нас нет учебников по этому предмету')
+
 
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(subjects, state=FSM_study.study)

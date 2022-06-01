@@ -107,15 +107,18 @@ def del_elder(fi: str) -> bool:
     base.commit()
     return bool(len(result))
 
+
 def set_book(subject: str, title: str, link: str) -> None:
     """Добавляет книгу"""
     cursor.execute("INSERT INTO books (subject, title, link) VALUES (?,?)", (subject, title, link))
 
-def get_book(subject: str) -> str:
+
+def get_books(subject: str) -> list:
     """Возвращает книгу"""
     books = cursor.execute("SELECT link FROM books WHERE subject = ?", (subject,)).fetchall()
     return books
 
-def del_book(title: str) -> str:
+
+def del_book(title: str) -> None:
     """Удаляет книгу"""
     cursor.execute("DELETE FROM books WHERE title = ?", (title,))
