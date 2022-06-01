@@ -25,7 +25,6 @@ async def timetable(message: types.Message):
     if message.text == 'Узнать пары у другого человека':
         await message.answer('Введи номер группы или фамилию с именем', reply_markup=timetable_someone_markup())
         await FSM_timetable.someone_timetable.set()
-
     if message.text == 'Назад в меню':
         fio = get_profile(message.from_user.id)
         course = get_course_by_fio(fio)
@@ -41,11 +40,15 @@ async def timetable_day_lessons(message: types.Message):
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_today_lessons(group)
+        if not text:
+            text = f"У тебя сегодня нет пар"
         await message.answer(text, parse_mode=types.ParseMode.HTML)
     if message.text == 'Пары завтра':
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_tomorrow_lessons(group)
+        if not text:
+            text = f"У тебя завтра нет пар"
         await message.answer(text, parse_mode=types.ParseMode.HTML)
     if message.text == 'Вернуться в расписание':
         await message.answer('Выбери расписание', reply_markup=timetable_markup())
@@ -59,6 +62,8 @@ async def timetable_someone(message: types.Message):
         else:
             group = message.text
         text = get_today_lessons(group)
+        if not text:
+            text = f"У {message.text} сегодня нет пар"
         await message.answer(text, reply_markup=timetable_markup(), parse_mode=types.ParseMode.HTML)
         await FSM_timetable.timetable.set()
     elif message.text == 'Вернуться в расписание':

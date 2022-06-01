@@ -37,19 +37,20 @@ def get_day_index() -> int:
 
 
 def get_lessons_by_day(group: str, sheet, day: int) -> str or bool:
-    text = ''
+    weekdays = {0: "ПОНЕДЕЛЬНИК", 1: "ВТОРНИК", 2: "СРЕДА", 3: "ЧЕТВЕРГ", 4: "ПЯТНИЦА", 5: "СУББОТА"}
     if day == 7:
         day = 0
+    text = ''
     index = get_index(group, sheet)
     if day == 6:
         return 'Воскресенье - выходной день!'
-    if day == 2 or day == 5:
-        return 'Занятия по блоку дисциплин\n"Естественная-научная картина мира"'
+    if (day == 2 or day == 5) and get_course(group) == 1:
+        return f'{text}Занятия по блоку дисциплин\n"Естественная-научная картина мира"'
     for i in range(2 + day * 7, day * 7 + 9):
         if sheet[i][index].value:
             text += f'<u><b>{str(sheet[i][2].value)}</b></u>\n{str(sheet[i][index].value.strip())}\n\n'
     if len(text):
-        return text
+        return f'<i>{weekdays[day]}</i>\n{text}'
     return False
 
 
@@ -59,7 +60,7 @@ def get_week_timetable(group: str) -> tuple:
     index_of_group = get_index(group, sheet)
     days = []
     for index_of_day in range(2, 44, 7):
-        text = f'{sheet[index_of_day][1].value}\n'
+        text = f'<i>{sheet[index_of_day][1].value.upper()}</i>\n'
         if (index_of_day == 16 or index_of_day == 37) and get_course(group) == 1:
             text += 'Занятия по блоку дисциплин\n"Естественная-научная картина мира"'
         else:
