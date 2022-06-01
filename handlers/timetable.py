@@ -26,7 +26,7 @@ async def timetable(message: types.Message):
         await message.answer('Введи номер группы или фамилию с именем', reply_markup=timetable_someone_markup())
         await FSM_timetable.someone_timetable.set()
 
-    if message.text == 'Назад в меню':
+    if message.text == '\U0001F519 Вернуться в меню':
         fio = get_profile(message.from_user.id)
         course = get_course_by_fio(fio)
         group = get_group_by_fio(fio)
@@ -47,7 +47,7 @@ async def timetable_day_lessons(message: types.Message):
         group = get_group_by_fio(fio)
         text = get_tomorrow_lessons(group)
         await message.answer(text)
-    if message.text == 'Вернуться в расписание':
+    if message.text == '\U0001F519 Вернуться в расписание':
         await message.answer('Выбери расписание', reply_markup=timetable_markup())
         await FSM_timetable.timetable.set()
 
@@ -61,7 +61,7 @@ async def timetable_someone(message: types.Message):
         text = get_today_lessons(group)
         await message.answer(text, reply_markup=timetable_markup())
         await FSM_timetable.timetable.set()
-    elif message.text == 'Вернуться в расписание':
+    elif message.text == '\U0001F519 Вернуться в расписание':
         await message.answer('Выбери расписание', reply_markup=timetable_markup())
         await FSM_timetable.timetable.set()
 

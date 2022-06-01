@@ -36,13 +36,13 @@ def get_lessons_by_day(group: str, sheet, day: int) -> str:
     text = ''
     index = get_index(group, sheet)
     if day == 6:
-        return 'воскресенье - выходной день!'
+        return 'Воскресенье - выходной день!'
     for i in range(2 + day * 7, day * 7 + 9):
         if sheet[i][index].value:
             text += f'{str(sheet[i][2].value)}\n{str(sheet[i][index].value)}\n'
     if len(text) > 1:
         return text
-    return f'у {group} группы нет пар'
+    return f'У {group} группы нет пар'
 
 
 def get_week_timetable(group: str) -> tuple:
@@ -75,7 +75,7 @@ def get_now_lesson(group: str) -> str:
             if check_time_in_range(start, end, time):
                 return f'{sheet[i][2].value}\n{sheet[i][index].value}'
     book.close()
-    return 'у вас нет пары сейчас'
+    return 'У вас нет пары сейчас'
 
 
 def get_today_lessons(group: str) -> str:

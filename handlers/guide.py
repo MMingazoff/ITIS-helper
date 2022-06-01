@@ -6,16 +6,16 @@ from scripts.excel import get_group_by_fio, get_course_by_fio
 
 
 async def guide(message: types.Message):
-    if message.text == 'Общепиты':
+    if message.text == '\U0001F372 Общепиты':
         catering = 'Тут должны быть общепиты'
         await message.answer(catering)
-    if message.text == 'Места где можно отдохнуть':
+    if message.text == '\U0001F919 Места где можно отдохнуть':
         places_to_relax = 'Тут должны быть места для отдыха'
         await message.answer(places_to_relax)
-    if message.text == 'Справочник для первокурсника':
+    if message.text == '\U0001F64F Справочник для первокурсника':
         student_handbook = 'Тут будет что-то связанное с помощью студенту'
         await message.answer(student_handbook)
-    if message.text == 'Вернуться в меню':
+    if message.text == '\U0001F519 Вернуться в меню':
         fio = get_profile(message.from_user.id)
         course = get_course_by_fio(fio)
         group = get_group_by_fio(fio)

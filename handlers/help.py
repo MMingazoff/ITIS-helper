@@ -8,7 +8,7 @@ from scripts.excel import get_group_by_fio, get_course_by_fio, get_all_group_mem
 
 
 async def help(message: types.Message):
-    if message.text == 'Список моей группы':
+    if message.text == '\U0001F468 Список моей группы':
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         # Для фото списка группы (пока нам не нужно)
@@ -20,16 +20,16 @@ async def help(message: types.Message):
         #     await message.answer('Извините, у нас нет фото списка вашей группы')
         group_list = group + '\n' + '\n'.join(f'{num}. {fio}' for num, fio in enumerate(get_all_group_members(group), 1))
         await message.answer(group_list)
-    if message.text == 'Полезные ссылки':
+    if message.text == '\U0001F517 Полезные ссылки':
         links = '\n'.join(f'{name}: {link}' for name, link in get_everything('links'))
         await message.answer(links)
-    if message.text == 'Список старост':
+    if message.text == '\U0001F474 Список старост':
         elders = '\n'.join(f'{group}: {fi} {contact}' for group, fi, contact in get_elders())
         await message.answer(elders)
-    if message.text == 'Ваши пожелания для бота':
+    if message.text == '\U0001F4EA Ваши пожелания для бота':
         await message.answer('Введите ваши пожелания', reply_markup=wishes_markup())
         await FSM_helps.wishes.set()
-    if message.text == 'Вернуться в меню':
+    if message.text == '\U0001F519 Вернуться в меню':
         fio = get_profile(message.from_user.id)
         course = get_course_by_fio(fio)
         group = get_group_by_fio(fio)
@@ -40,7 +40,7 @@ async def help(message: types.Message):
 
 
 async def wishes(message: types.Message):
-    if message.text == 'Вернуться в помощь':
+    if message.text == '\U0001F519 Вернуться в помощь':
         await message.answer('Чем помочь?', reply_markup=help_markup())
         await FSM_helps.help.set()
     else:
