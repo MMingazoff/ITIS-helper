@@ -1,7 +1,6 @@
-import os
 from create_bot import bot
 from aiogram import types, Dispatcher
-from keyboards import menu_markup, help_markup, wishes_markup
+from keyboards.kb import menu_markup, help_markup, wishes_markup
 from handlers.fsm import FSM_helps, FSM_start
 from scripts.sql import get_profile, get_everything, get_elders
 from scripts.excel import get_group_by_fio, get_course_by_fio, get_all_group_members
@@ -11,13 +10,6 @@ async def help(message: types.Message):
     if message.text == 'Список моей группы':
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
-        # Для фото списка группы (пока нам не нужно)
-        # photo_path = os.path.abspath(__file__)[:-16] + f'data/groups/{group}.png'
-        # if os.path.exists(photo_path):
-        #     with open(photo_path, 'rb') as photo:
-        #         await bot.send_photo(chat_id=message.chat.id, photo=photo)
-        # else:
-        #     await message.answer('Извините, у нас нет фото списка вашей группы')
         group_list = group + '\n' + '\n'.join(f'{num}. {fio}' for num, fio in enumerate(get_all_group_members(group), 1))
         await message.answer(group_list)
     if message.text == 'Полезные ссылки':
