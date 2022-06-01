@@ -1,7 +1,8 @@
 from aiogram import types, Dispatcher
 from keyboards.admin_kb import main_markup, interact_markup
 from handlers.fsm import FSM_admin, FSM_cafes, FSM_elders, FSM_useful_links, FSM_leisure_places
-from scripts.sql import add_elder, del_elder, add_link, del_link
+from scripts.sql import add_elder, del_elder, add_link, del_link, get_total_users
+from scripts.count_time import get_time_passed
 
 
 async def admin_start(message: types.Message):
@@ -19,6 +20,11 @@ async def edit_section(message: types.Message):
         await FSM_admin.cafes.set()
     elif message.text == "Места для отдыха":
         await FSM_admin.leisure_places.set()
+    elif message.text == "Краткая статистика":
+        await message.answer(f"В боте зарегистрированно {get_total_users()} пользователя\n"
+                             f"С момента запуска бота прошло {get_time_passed()}\n"
+                             f"(ДНИ:ЧАСЫ:МИН:СЕК)")
+        next_answer = False
     else:
         await message.answer("Используй клавиатуру")
         next_answer = False
@@ -119,7 +125,7 @@ async def del_cafe_handler(message: types.Message):
 
 
 def register_commands(dp: Dispatcher):
-    dp.register_message_handler(admin_start, state='*', commands=['admin', 'cancel'], is_chat_admin=True, chat_id=-1001603217169)
+    dp.register_message_handler(admin_start, state='*', commands=['admin', 'cancel'], is_chat_admin=True, chat_id=-786585022)
 
 
 def register_handlers(dp: Dispatcher):

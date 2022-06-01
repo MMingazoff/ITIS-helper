@@ -106,3 +106,9 @@ def del_elder(fi: str) -> bool:
     cursor.execute("DELETE FROM elders WHERE fi = ?", (fi,))
     base.commit()
     return bool(len(result))
+
+
+def get_total_users() -> int:
+    """Возвращает количество пользователей"""
+    result = cursor.execute("SELECT * FROM users")
+    return len(result.fetchall())
