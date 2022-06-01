@@ -112,3 +112,19 @@ def get_total_users() -> int:
     """Возвращает количество пользователей"""
     result = cursor.execute("SELECT * FROM users")
     return len(result.fetchall())
+
+
+def set_book(subject: str, title: str, link: str) -> None:
+    """Добавляет книгу"""
+    cursor.execute("INSERT INTO books (subject, title, link) VALUES (?,?)", (subject, title, link))
+
+
+def get_books(subject: str) -> list:
+    """Возвращает книгу"""
+    books = cursor.execute("SELECT link, title FROM books WHERE subject = ?", (subject,)).fetchall()
+    return books
+
+
+def del_book(title: str) -> None:
+    """Удаляет книгу"""
+    cursor.execute("DELETE FROM books WHERE title = ?", (title,))
