@@ -13,7 +13,7 @@ async def timetable(message: types.Message):
         group = get_group_by_fio(fio)
         text = get_week_timetable(group)
         for day in text:
-            await message.answer(day)
+            await message.answer(day, parse_mode="MARKDOWN")
     if message.text == 'Расписание на день':
         await message.answer('Выбери нужный день', reply_markup=today_tomorrow_markup())
         await FSM_timetable.today_tomorrow.set()
@@ -41,12 +41,12 @@ async def timetable_day_lessons(message: types.Message):
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_today_lessons(group)
-        await message.answer(text)
+        await message.answer(text, parse_mode="MARKDOWN")
     if message.text == 'Пары завтра':
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_tomorrow_lessons(group)
-        await message.answer(text)
+        await message.answer(text, parse_mode="MARKDOWN")
     if message.text == 'Вернуться в расписание':
         await message.answer('Выбери расписание', reply_markup=timetable_markup())
         await FSM_timetable.timetable.set()
@@ -59,7 +59,7 @@ async def timetable_someone(message: types.Message):
         else:
             group = message.text
         text = get_today_lessons(group)
-        await message.answer(text, reply_markup=timetable_markup())
+        await message.answer(text, reply_markup=timetable_markup(), parse_mode="MARKDOWN")
         await FSM_timetable.timetable.set()
     elif message.text == 'Вернуться в расписание':
         await message.answer('Выбери расписание', reply_markup=timetable_markup())
