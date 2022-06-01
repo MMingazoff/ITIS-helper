@@ -1,5 +1,5 @@
 from aiogram import types, Dispatcher
-from keyboards import menu_markup
+from keyboards.kb import menu_markup
 from handlers.fsm import FSM_guide, FSM_start
 from scripts.sql import get_profile
 from scripts.excel import get_group_by_fio, get_course_by_fio

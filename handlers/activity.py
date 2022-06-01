@@ -1,24 +1,32 @@
 import aiogram.types
 from aiogram import types, Dispatcher
-from keyboards import (menu_markup,
-                       activity_markup,
-                       events_inline_markup,
-                       someone_points_markup,
-                       top_students_markup,
-                       delete_msg_inline_markup,
-                       choose_events_markup)
+from keyboards.kb import (menu_markup,
+                          activity_markup,
+                          events_inline_markup,
+                          someone_points_markup,
+                          top_students_markup,
+                          delete_msg_inline_markup,
+                          choose_events_markup)
 from scripts.excel import is_a_student_by_fi
 from scripts.vk_parsing import get_request_posts, get_du_posts
 from handlers.fsm import FSM_activity, FSM_start
 from scripts.sql import get_profile
 from scripts.excel import get_group_by_fio, get_course_by_fio, from_du, get_fio_by_fi
 from scripts.activity import sorted_balls, get_students_balls_place
-from time import time
+from time import strftime
+
 
 request_posts = list()
 du_posts = list()
 rating = sorted_balls()
-students = get_students_balls_place()
+students = get_students_balls_place(rating)
+
+
+def update_activity():
+    global rating, students
+    rating = sorted_balls()
+    students = get_students_balls_place(rating)
+    print(f'{strftime("%d-%m-%Y %H:%M:%S")}: balls updated successfully')
 
 
 async def activity(message: types.Message):
@@ -136,11 +144,9 @@ async def someone_points(message: types.Message):
 
 
 async def top_students(message: types.Message):
-    start = time()
     if message.text == '1-10 место':
         rating_out = '\n'.join(f"{place}. {' '.join(fio.split()[:2])}, {balls} баллов" for place, (fio, balls) in rating[:10])
         await message.answer(rating_out)
-        print(time() - start)
     if message.text == '11-20 место':
         rating_out = '\n'.join(f"{place}. {' '.join(fio.split()[:2])}, {balls} баллов" for place, (fio, balls) in rating[10:20])
         await message.answer(rating_out)

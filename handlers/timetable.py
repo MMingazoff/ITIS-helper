@@ -1,5 +1,5 @@
 from aiogram import types, Dispatcher
-from keyboards import menu_markup, today_tomorrow_markup, timetable_markup, timetable_someone_markup
+from keyboards.kb import menu_markup, today_tomorrow_markup, timetable_markup, timetable_someone_markup
 from scripts.timetable import get_week_timetable, get_now_lesson, get_tomorrow_lessons, get_today_lessons
 from scripts.excel import get_group_by_fi
 from scripts.sql import get_profile
