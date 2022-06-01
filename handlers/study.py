@@ -17,13 +17,16 @@ async def subjects(message: types.Message):
         await FSM_start.menu.set()
     else:
         books = get_books(message.text)
-        try:
-            result = '\n'.join(link for link, *args in books)
+        if books:
+            result = '\n'.join(f'<a href="{link}">{title}</a>' for link, title in books)
             await message.answer(
-                f'Учебники. {message.text}: \n{result}'
+                f'Учебники. {message.text}: \n{result}',
+                parse_mode='HTML'
             )
-        except TypeError:
-            await message.answer('Пока у нас нет учебников по этому предмету')
+        else:
+            await message.answer(
+                "У нас пока нет учебников по этому предмету."
+            )
 
 
 def register_handlers(dp: Dispatcher):

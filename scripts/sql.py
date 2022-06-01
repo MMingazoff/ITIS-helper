@@ -115,7 +115,7 @@ def set_book(subject: str, title: str, link: str) -> None:
 
 def get_books(subject: str) -> list:
     """Возвращает книгу"""
-    books = cursor.execute("SELECT link FROM books WHERE subject = ?", (subject,)).fetchall()
+    books = cursor.execute("SELECT link, title FROM books WHERE subject = ?", (subject,)).fetchall()
     return books
 
 
