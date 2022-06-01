@@ -6,8 +6,9 @@ def main_markup():
     elders = KeyboardButton('Список старост')
     cafes = KeyboardButton('Общепиты')
     leisure_places = KeyboardButton('Места для отдыха')
+    stats = KeyboardButton('Краткая статистика')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row(useful_links, elders).row(cafes, leisure_places)
+    keyboard.row(useful_links, elders).row(cafes, leisure_places).add(stats)
     return keyboard
 
 

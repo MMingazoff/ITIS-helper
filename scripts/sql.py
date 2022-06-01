@@ -36,7 +36,7 @@ def get_profile(user_id: int) -> str:
 def user_in_db(user_id: int) -> bool:
     """Проверяет наличие пользователя в БД"""
     result = cursor.execute("SELECT id FROM users WHERE user_id = ?", (user_id,))
-    return bool(len(result.fetchall()))
+    return bool(result.fetchall())
 
 
 def get_group(fio: str) -> str:
@@ -105,4 +105,10 @@ def del_elder(fi: str) -> bool:
     result = result.fetchall()
     cursor.execute("DELETE FROM elders WHERE fi = ?", (fi,))
     base.commit()
-    return bool(len(result))
+    return bool(result)
+
+
+def get_total_users() -> int:
+    """Возвращает количество пользователей"""
+    result = cursor.execute("SELECT * FROM users")
+    return len(result.fetchall())
