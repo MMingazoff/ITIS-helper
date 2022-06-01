@@ -48,7 +48,7 @@ def get_lessons_by_day(group: str, sheet, day: int) -> str or bool:
                     '\nсогласно приложению №3.'
     for i in range(2 + day * 7, day * 7 + 9):
         if sheet[i][index].value:
-            text += f'{str(sheet[i][2].value)}\n{str(sheet[i][index].value)}\n'
+            text += f'{str(sheet[i][2].value)}\n{str(sheet[i][index].value.strip())}\n\n'
     if len(text):
         return text
     return False
@@ -67,7 +67,7 @@ def get_week_timetable(group: str) -> tuple:
         else:
             for index in range(index_of_day, index_of_day+7):
                 if sheet[index][index_of_group].value:
-                    text += f'{sheet[index][2].value}\n{sheet[index][index_of_group].value}\n\n'
+                    text += f'{sheet[index][2].value}\n{sheet[index][index_of_group].value.strip()}\n\n'
         if len(text) < 10:
             text += 'Нет пар'
         days.append(text)
