@@ -44,8 +44,7 @@ def get_lessons_by_day(group: str, sheet, day: int) -> str or bool:
     if day == 6:
         return 'Воскресенье - выходной день!'
     if day == 2 or day == 5:
-        return 'Занятия по блоку дисциплин \n" Естественная-научная картина мира",' \
-                    '\nсогласно приложению №3.'
+        return 'Занятия по блоку дисциплин\n"Естественная-научная картина мира"'
     for i in range(2 + day * 7, day * 7 + 9):
         if sheet[i][index].value:
             text += f'<u><b>{str(sheet[i][2].value)}</b></u>\n{str(sheet[i][index].value.strip())}\n\n'
@@ -62,8 +61,7 @@ def get_week_timetable(group: str) -> tuple:
     for index_of_day in range(2, 44, 7):
         text = f'{sheet[index_of_day][1].value}\n'
         if (index_of_day == 16 or index_of_day == 37) and get_course(group) == 1:
-            text += 'Занятия по блоку дисциплин \n" Естественная-научная картина мира",' \
-                    '\nсогласно приложению №3.'
+            text += 'Занятия по блоку дисциплин\n"Естественная-научная картина мира"'
         else:
             for index in range(index_of_day, index_of_day+7):
                 if sheet[index][index_of_group].value:
@@ -93,7 +91,7 @@ def get_now_lesson(group: str) -> str:
             if check_time_in_range(start, end, time):
                 return f'<u><b>{sheet[i][2].value}</b></u>\n{sheet[i][index].value}'
     book.close()
-    return 'у вас нет пары сейчас'
+    return 'У тебя сейчас нет пары'
 
 
 def get_today_lessons(group: str) -> str:
