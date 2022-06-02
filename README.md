@@ -19,7 +19,7 @@ cd ITIS-helper
     - получите токен [ссылка на гайд](https://dev.vk.com/api/getting-started#%D0%A0%D0%B5%D0%B3%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F%20%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F)
     - создайте файл с токеном
     ```shell
-    echo ACCESS_TOKEN = "your token" >> vk_auth.py
+    echo ACCESS_TOKEN = "your token" >> config.py
     ```
 ### 4. Установите зависимости
 ```shell
