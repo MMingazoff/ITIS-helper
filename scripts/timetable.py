@@ -28,7 +28,7 @@ def get_index(group: str, sheet) -> int:
 
 
 def get_path(group: str) -> str:
-    courses = {1: '1course.xlsx', 2: '2course.xlsx', 3: '3course.xlsx', 4: '4course.xlsx', 'Магистры': 'masters'}
+    courses = {1: '1course.xlsx', 2: '2course.xlsx', 3: '3course.xlsx', 4: '4course.xlsx', 'Магистры': 'masters.xlsx'}
     path = os.path.abspath(__file__)[:-20] + 'data/timetable/'
     return f'{path}{courses[get_course(group)]}'
 
