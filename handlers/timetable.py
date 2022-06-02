@@ -1,5 +1,5 @@
 from aiogram import types, Dispatcher
-from keyboards.kb import menu_markup, today_tomorrow_markup, timetable_markup, timetable_someone_markup
+from keyboards import menu_markup, today_tomorrow_markup, timetable_markup, timetable_someone_markup
 from scripts.timetable import get_week_timetable, get_now_lesson, get_tomorrow_lessons, get_today_lessons
 from scripts.excel import get_group_by_fi
 from scripts.sql import get_profile
@@ -14,7 +14,7 @@ async def timetable(message: types.Message):
         text = get_week_timetable(group)
         for day in text:
             await message.answer(day, parse_mode=types.ParseMode.HTML)
-    if message.text == 'Расписание на день':
+    if message.text == '\U00002753 Расписание на день':
         await message.answer('Выбери нужный день', reply_markup=today_tomorrow_markup())
         await FSM_timetable.today_tomorrow.set()
     if message.text == 'Какая у меня сейчас пара':
@@ -22,10 +22,10 @@ async def timetable(message: types.Message):
         group = get_group_by_fio(fio)
         text = get_now_lesson(group)
         await message.answer(text, parse_mode=types.ParseMode.HTML)
-    if message.text == 'Узнать пары у другого человека':
+    if message.text == '\U0001F50E Узнать пары у другого человека':
         await message.answer('Введи номер группы или фамилию с именем', reply_markup=timetable_someone_markup())
         await FSM_timetable.someone_timetable.set()
-    if message.text == 'Назад в меню':
+    if message.text == '\U0001F519 Вернуться в меню':
         fio = get_profile(message.from_user.id)
         course = get_course_by_fio(fio)
         group = get_group_by_fio(fio)
@@ -50,7 +50,7 @@ async def timetable_day_lessons(message: types.Message):
         if not text:
             text = f"У тебя завтра нет пар"
         await message.answer(text, parse_mode=types.ParseMode.HTML)
-    if message.text == 'Вернуться в расписание':
+    if message.text == '\U0001F519 Вернуться в расписание':
         await message.answer('Выбери расписание', reply_markup=timetable_markup())
         await FSM_timetable.timetable.set()
 
@@ -66,7 +66,7 @@ async def timetable_someone(message: types.Message):
             text = f"У {message.text} сегодня нет пар"
         await message.answer(text, reply_markup=timetable_markup(), parse_mode=types.ParseMode.HTML)
         await FSM_timetable.timetable.set()
-    elif message.text == 'Вернуться в расписание':
+    elif message.text == '\U0001F519 Вернуться в расписание':
         await message.answer('Выбери расписание', reply_markup=timetable_markup())
         await FSM_timetable.timetable.set()
 

@@ -110,3 +110,4 @@ def get_tomorrow_lessons(group: str) -> str:
     text = get_lessons_by_day(group, sheet, day=get_day_index()+1)
     book.close()
     return text
+

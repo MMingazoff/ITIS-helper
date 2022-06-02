@@ -22,41 +22,41 @@ async def enter_fio(message: types.Message):
             reply_markup=menu_markup())
         await FSM_start.menu.set()
     else:
-        await message.answer('Такого студента нету, или вы ошиблись c ФИО')
+        await message.answer('Такого студента нет, или вы ошиблись c ФИО')
         await FSM_start.fio.set()
 
 
 async def menu(message: types.Message):
-    if message.text == 'Расписание':
+    if message.text == '\U0001F4C5 Расписание':
         await message.answer('Выбери расписание', reply_markup=timetable_markup())
         await FSM_timetable.timetable.set()
-    if message.text == 'Учеба':
+    if message.text == '\U0001F4D5 Учеба':
         fio = get_profile(message.from_user.id)
         course = get_course_by_fio(fio)
         await message.answer('Выбери нужный тебе предмет', reply_markup=study_markup(course))
         await FSM_study.study.set()
-    if message.text == 'Помощь':
+    if message.text == '\U0001F198 Помощь':
         await message.answer('Чем помочь?', reply_markup=help_markup())
         await FSM_helps.help.set()
-    if message.text == 'Сменить профиль':
+    if message.text == '\U0001F503 Сменить профиль':
         await FSM_start.swap_profile.set()
         await message.answer('Введи свое ФИО', reply_markup=swap_profile_markup())
-    if message.text == 'Активности':
+    if message.text == '\U000026F3 Активности':
         await message.answer(
             'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы\n'
             '<i>Примечание: в рейтинге учитываются баллы реквеста и ДУ</i>',
             reply_markup=activity_markup(),
             parse_mode=types.ParseMode.HTML)
         await FSM_activity.activity.set()
-    if message.text == 'Гид':
+    if message.text == '\U0001F5FA Гид':
         await message.answer('Здесь ты можешь посмотреть места, где можно хорошо провести время',
                              reply_markup=guide_markup())
         await FSM_guide.guide.set()
 
 
 async def swap_profile(message: types.Message):
-    if message.text == 'Вернуться в меню' or is_a_student_by_fio(message.text):
-        if message.text == 'Вернуться в меню':
+    if message.text == '\U0001F519 Вернуться в меню' or is_a_student_by_fio(message.text):
+        if message.text == '\U0001F519 Вернуться в меню':
             fio = get_profile(message.from_user.id)
         else:
             fio = message.text

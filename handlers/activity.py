@@ -30,7 +30,7 @@ def update_activity():
 
 
 async def activity(message: types.Message):
-    if message.text == 'Доступные мероприятия':
+    if message.text == '\U0000267F Доступные мероприятия':
         fio = get_profile(message.from_user.id)
         if from_du(fio):
             await message.answer("Какие мероприятия тебе нужны?", reply_markup=choose_events_markup())
@@ -43,17 +43,17 @@ async def activity(message: types.Message):
                                  reply_markup=events_inline_markup("itisrequest", request_posts[0][1], 0),
                                  parse_mode=types.ParseMode.HTML,
                                  disable_web_page_preview=True)
-    if message.text == 'Я в рейтинге':
+    if message.text == '\U0001F4C9 Узнать свое место в рейтинге':
         fio = get_profile(message.from_user.id)
         balls, place = students[fio]
         await message.answer(f"Ты на {place} месте в топе\nУ тебя {balls} баллов")
-    if message.text == 'Узнать баллы человека':
+    if message.text == '\U0001F575 Узнать баллы человека':
         await message.answer('Введите фамилию и имя человека', reply_markup=someone_points_markup())
         await FSM_activity.someone_points.set()
-    if message.text == 'Общий рейтинг':
-        await message.answer('С какого по какое место тебе нужно?', reply_markup=top_students_markup())
+    if message.text == '\U0001F51D Общий рейтинг':
+        await message.answer('Выберите нужную вам часть топа', reply_markup=top_students_markup())
         await FSM_activity.top_students.set()
-    if message.text == 'Вернуться в меню':
+    if message.text == '\U0001F519 Вернуться в меню':
         fio = get_profile(message.from_user.id)
         course = get_course_by_fio(fio)
         group = get_group_by_fio(fio)
@@ -78,7 +78,7 @@ async def choose_activity(message: types.Message):
                              reply_markup=events_inline_markup("du", du_posts[0][1], 0),
                              parse_mode=types.ParseMode.HTML,
                              disable_web_page_preview=True)
-    if message.text == 'Вернуться в активность':
+    if message.text == '\U0001F519 Вернуться в активность':
         await message.answer(
             'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы',
             reply_markup=activity_markup())
@@ -134,7 +134,7 @@ async def someone_points(message: types.Message):
         await message.answer(f"{message.text} на {place} месте в топе\nУ него/неё {balls} баллов",
                              reply_markup=activity_markup())
         await FSM_activity.activity.set()
-    elif message.text == 'Назад в активность':
+    elif message.text == '\U0001F519 Вернуться в активность':
         await message.answer(
             'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы',
             reply_markup=activity_markup())
@@ -153,7 +153,7 @@ async def top_students(message: types.Message):
     if message.text == '21-30 место':
         rating_out = '\n'.join(f"{place}. {' '.join(fio.split()[:2])}, {balls} баллов" for place, (fio, balls) in rating[20:30])
         await message.answer(rating_out)
-    if message.text == 'Назад в активность':
+    if message.text == '\U0001F519 Вернуться в активность':
         await message.answer(
             'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы',
             reply_markup=activity_markup())

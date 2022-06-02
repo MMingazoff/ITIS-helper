@@ -13,13 +13,13 @@ async def admin_start(message: types.Message):
 
 async def edit_section(message: types.Message):
     next_answer = True
-    if message.text == "Полезные ссылки":
+    if message.text == "\U0001F517 Полезные ссылки":
         await FSM_admin.useful_links.set()
-    elif message.text == "Список старост":
+    elif message.text == "\U0001F474 Список старост":
         await FSM_admin.elders.set()
-    elif message.text == "Общепиты":
+    elif message.text == "\U0001F372 Общепиты":
         await FSM_admin.cafes.set()
-    elif message.text == "Места для отдыха":
+    elif message.text == "\U0001F919 Места где можно отдохнуть":
         await FSM_admin.leisure_places.set()
     elif message.text == "Краткая статистика":
         await message.answer(f"В боте зарегистрированно {get_total_users()} пользователя\n"

@@ -7,7 +7,7 @@ from scripts.excel import get_group_by_fio, get_course_by_fio
 
 
 async def subjects(message: types.Message):
-    if message.text == 'Назад в меню':
+    if message.text == '\U0001F519 Вернуться в меню':
         fio = get_profile(message.from_user.id)
         course = get_course_by_fio(fio)
         group = get_group_by_fio(fio)
