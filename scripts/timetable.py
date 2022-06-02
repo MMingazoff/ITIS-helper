@@ -75,7 +75,7 @@ def get_now_lesson(group: str) -> str:
             if check_time_in_range(start, end, time):
                 return f'{sheet[i][2].value}\n{sheet[i][index].value}'
     book.close()
-    return 'У вас нет пары сейчас'
+    return 'Сейчас у вас нет пары'
 
 
 def get_today_lessons(group: str) -> str:
