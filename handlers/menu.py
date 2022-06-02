@@ -43,8 +43,10 @@ async def menu(message: types.Message):
         await message.answer('Введи свое ФИО', reply_markup=swap_profile_markup())
     if message.text == 'Активности':
         await message.answer(
-            'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы',
-            reply_markup=activity_markup())
+            'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы\n'
+            '<i>Примечание: в рейтинге учитываются баллы реквеста и ДУ</i>',
+            reply_markup=activity_markup(),
+            parse_mode=types.ParseMode.HTML)
         await FSM_activity.activity.set()
     if message.text == 'Гид':
         await message.answer('Здесь ты можешь посмотреть места, где можно хорошо провести время',

@@ -21,7 +21,7 @@ async def timetable(message: types.Message):
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_now_lesson(group)
-        await message.answer(text)
+        await message.answer(text, parse_mode=types.ParseMode.HTML)
     if message.text == 'Узнать пары у другого человека':
         await message.answer('Введи номер группы или фамилию с именем', reply_markup=timetable_someone_markup())
         await FSM_timetable.someone_timetable.set()
