@@ -1,7 +1,7 @@
 import requests
 import re
 from typing import List, Tuple
-from vk_auth import access_token
+from config import ACCESS_TOKEN
 
 
 MAX_POSTS = 10
