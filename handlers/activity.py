@@ -1,6 +1,6 @@
 import aiogram.types
 from aiogram import types, Dispatcher
-from keyboards import (menu_markup,
+from keyboards.kb import (menu_markup,
                        activity_markup,
                        events_inline_markup,
                        someone_points_markup,

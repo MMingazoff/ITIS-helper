@@ -1,7 +1,7 @@
 import os
 from create_bot import bot
 from aiogram import types, Dispatcher
-from keyboards import menu_markup, help_markup, wishes_markup
+from keyboards.kb import menu_markup, help_markup, wishes_markup
 from handlers.fsm import FSM_helps, FSM_start
 from scripts.sql import get_profile, get_everything, get_elders
 from scripts.excel import get_group_by_fio, get_course_by_fio, get_all_group_members

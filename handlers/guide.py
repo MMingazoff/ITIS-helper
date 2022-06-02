@@ -1,5 +1,5 @@
 from aiogram import types, Dispatcher
-from keyboards import menu_markup, canteens_inline_markup, address_rating_inline_markup, places_inline_markup
+from keyboards.kb import menu_markup, canteens_inline_markup, address_rating_inline_markup, places_inline_markup
 from handlers.fsm import FSM_guide, FSM_start
 from scripts.sql import get_profile, get_canteen_description, get_canteen_photo, get_canteen_address, \
     get_place_description, get_place_photo, get_place_address, set_points, get_points
