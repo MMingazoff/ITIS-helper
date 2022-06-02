@@ -41,14 +41,18 @@ def get_group(fio: str) -> str:
     ...
 
 
-def input_points(user_id: str, place: str) -> None:
+def set_points(user_id: str, place: str, points: int) -> None:
     """Пользователь ставит баллы"""
-    ...
+    cursor.execute(f"UPDATE users SET {place} = ? WHERE user_id = ?", (points, user_id))
+    base.commit()
 
 
-def get_points(place: str) -> None:
+def get_points(place: str) -> str:
     """Возвращает среднее количество баллов у места"""
-    ...
+    avg = cursor.execute(f"SELECT AVG({place}) FROM users").fetchone()[0]
+    if avg == 0:
+        return 'Еще никто не голосовал'
+    return f'Это место имеет среднюю оценку: {avg}'
 
 
 def get_everything(table: str) -> List[str]:
@@ -69,8 +73,8 @@ def add_link(name: str, link: str) -> bool:
 
 def del_link(name: str) -> bool:
     """Удаляет ссылку из БД по названию"""
-    result = cursor.execute("SELECT * FROM links WHERE name = ?", (name, ))
-    cursor.execute("DELETE FROM links WHERE name = ?", (name, ))
+    result = cursor.execute("SELECT * FROM links WHERE name = ?", (name,))
+    cursor.execute("DELETE FROM links WHERE name = ?", (name,))
     base.commit()
     return not bool(len(result.fetchall()))
 
@@ -95,9 +99,107 @@ def add_elder(fi: str, contact: str) -> bool:
         return False
 
 
+def add_cafe(name: str, description: str, address: str, photo: str) -> bool:
+    """Добавляет общепит в БД"""
+    try:
+        cursor.execute("INSERT INTO canteens (name, description, address,photo) VALUES (?,?,?,?)",
+                       (name, description, address, photo))
+        base.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
+
+
+def add_place(name: str, description: str, address: str, photo: str) -> bool:
+    """Добавляет место для отдыха в БД"""
+    try:
+        cursor.execute("INSERT INTO places (name, description, address,photo) VALUES (?,?,?,?)",
+                       (name, description, address, photo))
+        base.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
+
+
+def delete_cafe(name: str) -> bool:
+    """Удаляет общепит по названию"""
+    result = cursor.execute("SELECT * FROM canteens WHERE name = ?", (name,)).fetchone()
+    cursor.execute("DELETE FROM canteens WHERE name = ?", (name,))
+    base.commit()
+    return bool(result)
+
+
+def delete_place(name: str) -> bool:
+    """Удаляет место для отдыха по названию"""
+    result = cursor.execute("SELECT * FROM places WHERE name = ?", (name,)).fetchone()
+    cursor.execute("DELETE FROM places WHERE name = ?", (name,))
+    base.commit()
+    return bool(result)
+
+
+def get_list_of_cafe() -> list:
+    """Список всех общепитов"""
+    result = cursor.execute("SELECT name FROM canteens").fetchall()
+    return [i[0] for i in result]
+
+
+def get_list_of_place() -> list:
+    """Список всех мест"""
+    result = cursor.execute("SELECT name FROM places").fetchall()
+    return [i[0] for i in result]
+
+
 def del_elder(fi: str) -> bool:
     """Удаляет старосту из БД по имени"""
-    result = cursor.execute("SELECT * FROM elders WHERE fi = ?", (fi, ))
+    result = cursor.execute("SELECT * FROM elders WHERE fi = ?", (fi,))
     cursor.execute("DELETE FROM elders WHERE fi = ?", (fi,))
     base.commit()
     return bool(len(result.fetchall()))
+
+
+def get_canteen_description(name: str) -> str:
+    """Описание общепита"""
+    description = cursor.execute("SELECT description FROM canteens WHERE name = ?", (name,)).fetchone()[0]
+    return description
+
+
+def get_canteen_address(name: str) -> str:
+    """Адрес общепита"""
+    address = cursor.execute("SELECT address FROM canteens WHERE name = ?", (name,)).fetchone()[0]
+    return address
+
+
+def get_canteen_photo(name: str) -> str:
+    """id фотографии общепита"""
+    photo = cursor.execute("SELECT photo FROM canteens WHERE name = ?", (name,)).fetchone()[0]
+    return photo
+
+
+def get_place_description(name: str) -> str:
+    """Описание места для отдыха"""
+    description = cursor.execute("SELECT description FROM places WHERE name = ?", (name,)).fetchone()[0]
+    return description
+
+
+def get_place_address(name: str) -> str:
+    """"Адрес места для отдыха"""
+    address = cursor.execute("SELECT address FROM places WHERE name = ?", (name,)).fetchone()[0]
+    return address
+
+
+def get_place_photo(name: str) -> str:
+    """id фотографии места для отдыха"""
+    photo = cursor.execute("SELECT photo FROM places WHERE name = ?", (name,)).fetchone()[0]
+    return photo
+
+
+def add_column(name: str) -> None:
+    """Добавление нового столбца в БД"""
+    cursor.execute(f"ALTER TABLE users ADD column '{name.replace(' ', '')}' 'int'")
+    base.commit()
+
+
+def delete_column(name: str) -> None:
+    """Удаление столбца из БД"""
+    cursor.execute(f"ALTER TABLE users drop {name.replace(' ', '')}")
+    base.commit()
