@@ -171,7 +171,7 @@ def delete_msg_inline_markup():
 
 
 def choose_events_markup():
-    itis_request = KeyboardButton('Itis Request')
+    itis_request = KeyboardButton('ITIS Request')
     du = KeyboardButton('ДУ 18')
     back_to_menu = KeyboardButton('\U0001F519 Вернуться в активность')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)

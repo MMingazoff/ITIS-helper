@@ -64,7 +64,7 @@ async def activity(message: types.Message):
 
 
 async def choose_activity(message: types.Message):
-    if message.text == 'Itis Request':
+    if message.text == 'ITIS Request':
         global request_posts
         request_posts = get_request_posts()
         await message.answer(request_posts[0][0],
