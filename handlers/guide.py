@@ -1,7 +1,8 @@
 from aiogram import types, Dispatcher
-from keyboards import menu_markup
+from keyboards.kb import menu_markup, canteens_inline_markup, address_rating_inline_markup, places_inline_markup
 from handlers.fsm import FSM_guide, FSM_start
-from scripts.sql import get_profile
+from scripts.sql import get_profile, get_canteen_description, get_canteen_photo, get_canteen_address, \
+    get_place_description, get_place_photo, get_place_address, set_points, get_points
 from scripts.excel import get_group_by_fio, get_course_by_fio
 
 
@@ -14,8 +15,15 @@ async def guide(message: types.Message):
         places_to_relax = 'Сюда ты можешь сходить отдохнуть'
         await message.answer(places_to_relax, reply_markup=places_inline_markup())
     if message.text == '\U0001F64F Справочник для первокурсника':
-        student_handbook = 'Тут будет что-то связанное с помощью студенту'
-        await message.answer(student_handbook)
+        student_handbook = '<b>Советы от разработчкиов бота</b>:\n' \
+                           '-заводите друзей в разнух группах\n' \
+                           '-общайтесь, помогайте друг другу\n' \
+                           '-находите друзей в старших группах\n' \
+                           '-для простоты сдачи зачетов, выбирайте курсы с маркой "в электронной форме"\n' \
+                           '-чтобы не вылететь с университета, ходи на физкультуру\n' \
+                           '-если ты плохо понимаешь материал, обратись к тьюторам\n' \
+                           '-если хочешь закрыть сессию, купи удачу за 100 на паре по психологии'
+        await message.answer(student_handbook, parse_mode=types.ParseMode.HTML)
     if message.text == '\U0001F519 Вернуться в меню':
         fio = get_profile(message.from_user.id)
         course = get_course_by_fio(fio)

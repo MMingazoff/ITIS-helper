@@ -54,7 +54,6 @@ def get_lessons_by_day(group: str, sheet, day: int) -> str or bool:
     return False
 
 
-
 def get_week_timetable(group: str) -> tuple:
     book = openpyxl.open(get_path(group), read_only=True)
     sheet = book.active
@@ -110,4 +109,3 @@ def get_tomorrow_lessons(group: str) -> str:
     text = get_lessons_by_day(group, sheet, day=get_day_index()+1)
     book.close()
     return text
-

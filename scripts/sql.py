@@ -170,7 +170,7 @@ def get_total_users() -> int:
 
 def set_book(subject: str, title: str, link: str) -> None:
     """Добавляет книгу"""
-    cursor.execute("INSERT INTO books (subject, title, link) VALUES (?,?)", (subject, title, link))
+    cursor.execute("INSERT INTO books (subject, title, link) VALUES (?,?,?)", (subject, title, link))
 
 
 def get_books(subject: str) -> list:

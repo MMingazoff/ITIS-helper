@@ -1,5 +1,5 @@
 from aiogram import types, Dispatcher
-from keyboards import menu_markup, today_tomorrow_markup, timetable_markup, timetable_someone_markup
+from keyboards.kb import menu_markup, today_tomorrow_markup, timetable_markup, timetable_someone_markup
 from scripts.timetable import get_week_timetable, get_now_lesson, get_tomorrow_lessons, get_today_lessons
 from scripts.excel import get_group_by_fi
 from scripts.sql import get_profile
@@ -8,7 +8,7 @@ from scripts.excel import get_group_by_fio, get_course_by_fio, is_a_group, is_a_
 
 
 async def timetable(message: types.Message):
-    if message.text == 'Расписание на неделю':
+    if message.text == '\U0001F4C5 Расписание на неделю':
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_week_timetable(group)
@@ -17,7 +17,7 @@ async def timetable(message: types.Message):
     if message.text == '\U00002753 Расписание на день':
         await message.answer('Выбери нужный день', reply_markup=today_tomorrow_markup())
         await FSM_timetable.today_tomorrow.set()
-    if message.text == 'Какая у меня сейчас пара':
+    if message.text == '\U00002757 Какая у меня сейчас пара':
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_now_lesson(group)

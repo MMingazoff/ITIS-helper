@@ -3,7 +3,7 @@ from keyboards.admin_kb import main_markup, interact_markup
 from handlers.fsm import FSM_admin, FSM_cafes, FSM_elders, FSM_useful_links, FSM_leisure_places
 from scripts.count_time import get_time_passed
 from scripts.sql import add_elder, del_elder, add_link, del_link, add_cafe, delete_cafe, add_place, delete_place, \
-    add_column, delete_column
+    add_column, delete_column, get_total_users
 
 
 async def admin_start(message: types.Message):
