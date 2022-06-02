@@ -1,5 +1,6 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from scripts.vk_parsing import MAX_POSTS
+from scripts.sql import get_list_of_cafe, get_list_of_place
 
 
 def menu_markup():
@@ -160,7 +161,7 @@ def swap_profile_markup():
     keyboard.row(back_to_menu)
     return keyboard
 
-    
+
 def delete_msg_inline_markup():
     """Инлайн кнопка, чтобы удалять сообщение"""
     delete_msg = InlineKeyboardButton(text='Удалить сообщение', callback_data='todelete')
@@ -175,4 +176,38 @@ def choose_events_markup():
     back_to_menu = KeyboardButton('Вернуться в активность')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row(itis_request, du).add(back_to_menu)
+    return keyboard
+
+
+def canteens_inline_markup():
+    """Инлайн кнопка с общепитами"""
+    canteens = get_list_of_cafe()
+    keyboard = InlineKeyboardMarkup()
+    for canteen in canteens:
+        btn = InlineKeyboardButton(text=canteen, callback_data='canteen' + canteen)
+        keyboard.add(btn)
+    return keyboard
+
+
+def places_inline_markup():
+    """Инлайн кнопка с местдами для отдыха"""
+    places = get_list_of_place()
+    keyboard = InlineKeyboardMarkup()
+    for place in places:
+        btn = InlineKeyboardButton(text=place, callback_data='place' + place)
+        keyboard.add(btn)
+    return keyboard
+
+
+def address_rating_inline_markup(address, name):
+    """Инлайн кнопки: адрес, оценки"""
+    keyboard = InlineKeyboardMarkup()
+    btn = InlineKeyboardButton(text='Открыть в Google Maps', url=address)
+    keyboard.add(btn)
+    btn_mark_1 = InlineKeyboardButton('1️⃣', callback_data='1 point' + name)
+    btn_mark_2 = InlineKeyboardButton('2️⃣', callback_data='2 point' + name)
+    btn_mark_3 = InlineKeyboardButton('3️⃣', callback_data='3 point' + name)
+    btn_mark_4 = InlineKeyboardButton('4️⃣', callback_data='4 point' + name)
+    btn_mark_5 = InlineKeyboardButton('5️⃣', callback_data='5 point' + name)
+    keyboard.row(btn_mark_1, btn_mark_2, btn_mark_3, btn_mark_4, btn_mark_5)
     return keyboard
