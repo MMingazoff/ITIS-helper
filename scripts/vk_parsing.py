@@ -25,7 +25,7 @@ def from_id_to_url(post_txt: str) -> str:
 def get_posts(group_name: str, max_posts: int = MAX_POSTS, pinned_posts: int = 0) -> List[Tuple[str, str]]:
     """На вход подется навание группы. Возвращается список из последних 10 постов и ссылок на них"""
     url = f"https://api.vk.com/method/wall.get?domain={group_name}&count={max_posts}&offset={pinned_posts}" \
-          f"&access_token={access_token}&v=5.131"
+          f"&access_token={ACCESS_TOKEN}&v=5.131"
     request = requests.get(url)
     source = request.json()
     posts = source["response"]["items"]
