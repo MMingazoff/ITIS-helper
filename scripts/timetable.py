@@ -4,7 +4,8 @@ import os
 
 
 def get_time_now():
-    return datetime.datetime.now().time()
+    delta = datetime.timedelta(hours=3, minutes=0)
+    return (datetime.datetime.now(datetime.timezone.utc) + delta).time()
 
 
 def check_time_in_range(start: datetime, end: datetime, current: datetime) -> bool:
