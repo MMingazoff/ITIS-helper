@@ -1,4 +1,5 @@
 from scripts.tables_downloader import start_up, download_du_active, download_request_active
+from scripts.excel import reload_data
 from handlers.activity import update_activity
 from threading import Thread
 from time import sleep, strftime
@@ -14,8 +15,9 @@ def download():
 
 def run_download():
     while True:
-        sleep(28000)  # треть дня
+        sleep(3600)  # один час
         download()
+        reload_data()
         sleep(60)
         update_activity()
 
