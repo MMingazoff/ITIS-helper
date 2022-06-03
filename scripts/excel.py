@@ -1,12 +1,19 @@
 import os
 import pandas as pd
 from typing import List
-
+from time import sleep
 """Скрипты для excel"""
 
 path = os.path.abspath(__file__)[:-16]
 df_students = pd.read_excel(path + 'data/itis_students.xlsx')
 list_groups = tuple(pd.read_excel(path + 'data/itis_groups.xlsx')['Group'])
+
+
+def reload_data():
+    """Обновляет данные"""
+    global df_students, list_groups
+    df_students = pd.read_excel(path + 'data/itis_students.xlsx')
+    list_groups = tuple(pd.read_excel(path + 'data/itis_groups.xlsx')['Group'])
 
 
 def is_a_student_by_fio(fio: str) -> bool:
@@ -82,3 +89,10 @@ def get_course_by_fio(fio: str) -> str:
 def from_du(fio: str) -> bool:
     profile = df_students[df_students['FIO'] == fio]
     return tuple(profile['from du'])[0]
+
+print(get_group_by_fi("Мингазов Марат"))
+
+sleep(30)
+reload_data()
+print(get_group_by_fi("Мингазов Марат"))
+
