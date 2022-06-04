@@ -7,27 +7,9 @@ from handlers.fsm import FSM_timetable, FSM_start
 from scripts.excel import get_group_by_fio, get_course_by_fio, is_a_group, is_a_student_by_fi
 
 
-def rate_limit(limit: int, key=None):
-    """
-    Decorator for configuring rate limit and key in different functions.
-
-    :param limit:
-    :param key:
-    :return:
-    """
-
-    def decorator(func):
-        setattr(func, 'throttling_rate_limit', limit)
-        if key:
-            setattr(func, 'throttling_key', key)
-        return func
-
-    return decorator
-
-
-@rate_limit(2)
 async def timetable(message: types.Message):
     if message.text == '\U0001F4C5 Расписание на неделю':
+        setattr(timetable, 'throttling_rate_limit', 0.5)
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_week_timetable(group)
@@ -37,6 +19,7 @@ async def timetable(message: types.Message):
         await message.answer('Выбери нужный день', reply_markup=today_tomorrow_markup())
         await FSM_timetable.today_tomorrow.set()
     if message.text == '\U00002757 Какая у меня сейчас пара':
+        setattr(timetable, 'throttling_rate_limit', 0.5)
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_now_lesson(group)
@@ -54,9 +37,9 @@ async def timetable(message: types.Message):
         await FSM_start.menu.set()
 
 
-@rate_limit(2)
 async def timetable_day_lessons(message: types.Message):
     if message.text == 'Пары сегодня':
+        setattr(timetable_day_lessons, 'throttling_rate_limit', 0.5)
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_today_lessons(group)
@@ -64,6 +47,7 @@ async def timetable_day_lessons(message: types.Message):
             text = f"У тебя сегодня нет пар"
         await message.answer(text, parse_mode=types.ParseMode.HTML)
     if message.text == 'Пары завтра':
+        setattr(timetable_day_lessons, 'throttling_rate_limit', 0.5)
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_tomorrow_lessons(group)
@@ -75,9 +59,9 @@ async def timetable_day_lessons(message: types.Message):
         await FSM_timetable.timetable.set()
 
 
-@rate_limit(2)
 async def timetable_someone(message: types.Message):
     if is_a_student_by_fi(message.text) or is_a_group(message.text):
+        setattr(timetable_someone, 'throttling_rate_limit', 0.5)
         if is_a_student_by_fi(message.text):
             group = get_group_by_fi(message.text)
         else:
