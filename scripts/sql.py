@@ -171,6 +171,7 @@ def get_total_users() -> int:
 def set_book(subject: str, title: str, link: str) -> None:
     """Добавляет книгу"""
     cursor.execute("INSERT INTO books (subject, title, link) VALUES (?,?,?)", (subject, title, link))
+    base.commit()
 
 
 def get_books(subject: str) -> list:
@@ -182,6 +183,7 @@ def get_books(subject: str) -> list:
 def del_book(title: str) -> None:
     """Удаляет книгу"""
     cursor.execute("DELETE FROM books WHERE title = ?", (title,))
+    base.commit()
 
 
 def get_canteen_description(name: str) -> str:
@@ -229,4 +231,28 @@ def add_column(name: str) -> None:
 def delete_column(name: str) -> None:
     """Удаление столбца из БД"""
     cursor.execute(f"ALTER TABLE users drop {name.replace(' ', '')}")
+    base.commit()
+
+
+def add_to_banlist(user_id: str):
+    try:
+        cursor.execute("INSERT INTO banned_users (user_id) VALUES (?)", (user_id,))
+        base.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
+
+
+def is_banned(user_id: str):
+    result = cursor.execute("SELECT * FROM banned_users WHERE user_id = ?", (user_id,))
+    return bool(result.fetchall())
+
+
+def get_all_banned_users():
+    result = cursor.execute("SELECT * FROM banned_users")
+    return result.fetchall()
+
+
+def delete_from_banlist(user_id: str):
+    cursor.execute("DELETE FROM banned_users WHERE user_id = ?", (user_id,))
     base.commit()

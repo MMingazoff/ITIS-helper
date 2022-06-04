@@ -1,7 +1,6 @@
 import os
 import pandas as pd
 from typing import List
-from time import sleep
 """Скрипты для excel"""
 
 path = os.path.abspath(__file__)[:-16]
@@ -89,10 +88,3 @@ def get_course_by_fio(fio: str) -> str:
 def from_du(fio: str) -> bool:
     profile = df_students[df_students['FIO'] == fio]
     return tuple(profile['from du'])[0]
-
-print(get_group_by_fi("Мингазов Марат"))
-
-sleep(30)
-reload_data()
-print(get_group_by_fi("Мингазов Марат"))
-

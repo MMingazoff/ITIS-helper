@@ -1,9 +1,10 @@
 from aiogram import types, Dispatcher
-from keyboards.admin_kb import main_markup, interact_markup
-from handlers.fsm import FSM_admin, FSM_cafes, FSM_elders, FSM_useful_links, FSM_leisure_places
+from keyboards.admin_kb import main_markup, interact_markup, cancel_markup
+from handlers.fsm import FSM_admin, FSM_cafes, FSM_elders, FSM_useful_links, FSM_leisure_places, FSM_unban
 from scripts.count_time import get_time_passed
 from scripts.sql import add_elder, del_elder, add_link, del_link, add_cafe, delete_cafe, add_place, delete_place, \
-    add_column, delete_column, get_total_users
+    add_column, delete_column, get_total_users, is_banned, delete_from_banlist
+from middleware import update_banlist
 
 
 async def admin_start(message: types.Message):
@@ -22,15 +23,29 @@ async def edit_section(message: types.Message):
     elif message.text == "Места где можно отдохнуть":
         await FSM_admin.leisure_places.set()
     elif message.text == "Краткая статистика":
-        await message.answer(f"В боте зарегистрированно {get_total_users()} пользователя\n"
+        await message.answer(f"В боте зарегистрированно {get_total_users()} пользователей\n"
                              f"С момента запуска бота прошло {get_time_passed()}\n"
                              f"(ДНИ:ЧАСЫ:МИН:СЕК)")
         next_answer = False
+    elif message.text == "Разбан":
+        await message.answer("Введит id того, кого нужно разбанить", reply_markup=cancel_markup())
+        next_answer = False
+        await FSM_unban.to_unban.set()
     else:
         await message.answer("Используй клавиатуру")
         next_answer = False
     if next_answer:
         await message.answer("Выбери нужное", reply_markup=interact_markup())
+
+
+async def unban(message: types.Message):
+    if is_banned(message.text):
+        delete_from_banlist(message.text)
+        update_banlist()
+        await message.answer('Пользователь разбанен', reply_markup=main_markup())
+        await FSM_admin.is_admin.set()
+    else:
+        await message.answer('Такого id нет в банлисте')
 
 
 async def edit_links(message: types.Message):
@@ -181,6 +196,8 @@ def register_commands(dp: Dispatcher):
 
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(edit_section, state=FSM_admin.is_admin)
+    #разбан
+    dp.register_message_handler(unban, state=FSM_unban.to_unban)
     # регистрация каждой секции
     dp.register_message_handler(edit_links, state=FSM_admin.useful_links)
     dp.register_message_handler(edit_cafes, state=FSM_admin.cafes)

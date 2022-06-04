@@ -61,3 +61,6 @@ class FSM_elders(StatesGroup):
     to_add = State()
     to_delete = State()
 
+
+class FSM_unban(StatesGroup):
+    to_unban = State()

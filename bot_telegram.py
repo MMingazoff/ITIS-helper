@@ -1,5 +1,5 @@
 from aiogram.utils import executor
-from create_bot import dp
+from create_bot import dp, loop
 from handlers import client, admin, other, commands
 from scripts.autodownloader import scheduled_download
 
@@ -11,4 +11,4 @@ scheduled_download()
 
 
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+    executor.start_polling(dp, skip_updates=True, loop=loop)

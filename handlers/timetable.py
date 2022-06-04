@@ -7,6 +7,25 @@ from handlers.fsm import FSM_timetable, FSM_start
 from scripts.excel import get_group_by_fio, get_course_by_fio, is_a_group, is_a_student_by_fi
 
 
+def rate_limit(limit: int, key=None):
+    """
+    Decorator for configuring rate limit and key in different functions.
+
+    :param limit:
+    :param key:
+    :return:
+    """
+
+    def decorator(func):
+        setattr(func, 'throttling_rate_limit', limit)
+        if key:
+            setattr(func, 'throttling_key', key)
+        return func
+
+    return decorator
+
+
+@rate_limit(2)
 async def timetable(message: types.Message):
     if message.text == '\U0001F4C5 Расписание на неделю':
         fio = get_profile(message.from_user.id)
@@ -35,6 +54,7 @@ async def timetable(message: types.Message):
         await FSM_start.menu.set()
 
 
+@rate_limit(2)
 async def timetable_day_lessons(message: types.Message):
     if message.text == 'Пары сегодня':
         fio = get_profile(message.from_user.id)
@@ -55,6 +75,7 @@ async def timetable_day_lessons(message: types.Message):
         await FSM_timetable.timetable.set()
 
 
+@rate_limit(2)
 async def timetable_someone(message: types.Message):
     if is_a_student_by_fi(message.text) or is_a_group(message.text):
         if is_a_student_by_fi(message.text):

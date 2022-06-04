@@ -22,7 +22,7 @@ def get_course(group: str) -> str:
 
 
 def get_index(group: str, sheet) -> int:
-    for index in range(3, 14):
+    for index in range(3, 20):
         if sheet[1][index].value == group:
             return index
 
@@ -91,6 +91,8 @@ def get_now_lesson(group: str) -> str:
             end_time = sheet[i][2].value[-5:]
             end = datetime.time(int(end_time[:2]), int(end_time[-2:]))
             if check_time_in_range(start, end, time):
+                if (day == 2 or day == 5) and get_course(group) == 1:
+                    return f'<u><b>{sheet[i][2].value}</b></u>\nЗанятия по блоку дисциплин\n"Естественная-научная картина мира"'
                 return f'<u><b>{sheet[i][2].value}</b></u>\n{sheet[i][index].value}'
     book.close()
     return 'У тебя сейчас нет пары'

@@ -7,8 +7,9 @@ def main_markup():
     cafes = KeyboardButton('Общепиты')
     leisure_places = KeyboardButton('Места для отдыха')
     stats = KeyboardButton('Краткая статистика')
+    unban = KeyboardButton('Разбан')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row(useful_links, elders).row(cafes, leisure_places).add(stats)
+    keyboard.row(useful_links, elders).row(cafes, leisure_places).row(unban, stats)
     return keyboard
 
 
@@ -18,4 +19,11 @@ def interact_markup():
     cancel = KeyboardButton('/cancel')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row(to_add, to_delete).add(cancel)
+    return keyboard
+
+
+def cancel_markup():
+    cancel = KeyboardButton('/cancel')
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(cancel)
     return keyboard
