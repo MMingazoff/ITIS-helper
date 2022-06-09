@@ -53,9 +53,9 @@ def set_points(user_id: str, place: str, points: int) -> None:
 def get_points(place: str) -> str:
     """Возвращает среднее количество баллов у места"""
     avg = cursor.execute(f"SELECT AVG({place}) FROM users").fetchone()[0]
-    if avg == 0:
+    if not avg:
         return 'Еще никто не голосовал'
-    return f'Это место имеет среднюю оценку: {avg}'
+    return f'Это место имеет среднюю оценку: {round(avg, 2)}'
 
 
 def get_everything(table: str) -> List[str]:

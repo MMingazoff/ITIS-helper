@@ -4,12 +4,12 @@ from scripts.timetable import get_week_timetable, get_now_lesson, get_tomorrow_l
 from scripts.excel import get_group_by_fi
 from scripts.sql import get_profile
 from handlers.fsm import FSM_timetable, FSM_start
-from scripts.excel import get_group_by_fio, get_course_by_fio, is_a_group, is_a_student_by_fi
+from scripts.excel import get_group_by_fio, get_course_by_fio, is_a_group, is_a_student_by_fi, get_exam
 
 
 async def timetable(message: types.Message):
     if message.text == '\U0001F4C5 Расписание на неделю':
-        setattr(timetable, 'throttling_rate_limit', 0.5)
+        setattr(timetable, 'throttling_rate_limit', 2)
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_week_timetable(group)
@@ -35,6 +35,12 @@ async def timetable(message: types.Message):
             f'Привет, {fio}, я готов тебе помогать\n\nФИО: {fio} \nКурс: {course} \nГруппа: {group} \nЧто тебе нужно?',
             reply_markup=menu_markup())
         await FSM_start.menu.set()
+    if message.text == '✔ Мои экзамены':
+        setattr(timetable, 'throttling_rate_limit', 0.5)
+        fio = get_profile(message.from_user.id)
+        group = get_group_by_fio(fio)
+        text = get_exam(group)
+        await message.answer(text, parse_mode=types.ParseMode.HTML)
 
 
 async def timetable_day_lessons(message: types.Message):

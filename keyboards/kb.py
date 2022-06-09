@@ -23,8 +23,9 @@ def timetable_markup():
     timetable_day = KeyboardButton('\U00002753 Расписание на день')
     timetable_group = KeyboardButton('\U0001F50E Узнать пары у другого человека')
     back_to_menu = KeyboardButton('\U0001F519 Вернуться в меню')
+    exam = KeyboardButton('✔ Мои экзамены')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row(timetable_week, timetable_day).row(what_lesson_now, timetable_group).row(back_to_menu)
+    keyboard.row(exam).row(timetable_week, timetable_day).row(what_lesson_now, timetable_group).row(back_to_menu)
     return keyboard
 
 

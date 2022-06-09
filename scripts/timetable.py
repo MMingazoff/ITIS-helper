@@ -34,14 +34,15 @@ def get_path(group: str) -> str:
 
 
 def get_day_index() -> int:
-    return datetime.datetime.today().weekday()
+    delta = datetime.timedelta(hours=3, minutes=0)
+    return (datetime.datetime.now(datetime.timezone.utc) + delta).weekday()
 
 
 def get_lessons_by_day(group: str, sheet, day: int) -> str or bool:
     weekdays = {0: "ПОНЕДЕЛЬНИК", 1: "ВТОРНИК", 2: "СРЕДА", 3: "ЧЕТВЕРГ", 4: "ПЯТНИЦА", 5: "СУББОТА"}
     if day == 7:
         day = 0
-    text = ''
+    text = f'<i>{weekdays[day]}</i>\n'
     index = get_index(group, sheet)
     if day == 6:
         return 'Воскресенье - выходной день!'
@@ -50,9 +51,9 @@ def get_lessons_by_day(group: str, sheet, day: int) -> str or bool:
     for i in range(2 + day * 7, day * 7 + 9):
         if sheet[i][index].value:
             text += f'<u><b>{str(sheet[i][2].value)}</b></u>\n{str(sheet[i][index].value.strip())}\n\n'
-    if len(text):
-        return f'<i>{weekdays[day]}</i>\n{text}'
-    return False
+    if len(text) < 20:
+        return False
+    return text
 
 
 def get_week_timetable(group: str) -> tuple:
@@ -68,8 +69,8 @@ def get_week_timetable(group: str) -> tuple:
             for index in range(index_of_day, index_of_day+7):
                 if sheet[index][index_of_group].value:
                     text += f'<u><b>{sheet[index][2].value}</b></u>\n{sheet[index][index_of_group].value.strip()}\n\n'
-        if len(text) < 10:
-            text += 'Нет пар'
+        if len(text) < 20:
+            text += 'Пар нет'
         days.append(text)
     book.close()
     return days[0], days[1], days[2], days[3], days[4], days[5]
@@ -81,6 +82,8 @@ def get_now_lesson(group: str) -> str:
     sheet = book.active
     index = get_index(group, sheet)
     day = get_day_index()
+    if day == 6:
+        return 'Воскресенье - выходной день!'
     for i in range(2 + day * 7, day * 7 + 9):
         if sheet[i][index].value:
             if (i - 2) % 7 > 0:
