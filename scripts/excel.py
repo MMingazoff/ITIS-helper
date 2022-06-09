@@ -7,7 +7,7 @@ from typing import List
 path = os.path.abspath(__file__)[:-16]
 df_students = pd.read_excel(path + 'data/itis_students.xlsx')
 list_groups = tuple(pd.read_excel(path + 'data/itis_groups.xlsx')['Group'])
-df_exam = pd.read_excel('data/exam.xlsx')
+df_exam = pd.read_excel(path + 'data/exam.xlsx')
 
 
 def reload_data():
@@ -96,5 +96,5 @@ def get_exam(group: str) -> str:
     """Узнать какие экзамены"""
     exams = df_exam[group].dropna()
     df_new = df_exam[df_exam[group].isin(exams)][['дни недели', 'дата', group]]
-    result = df_new['дата'] + '(' + df_new['дни недели'] + '):\n' + df_new[group] + '\n'
-    return '\n'.join(result)
+    result = df_new['дата'] + '(' + df_new['дни недели'] + '):</b></u>\n' + df_new[group] + '\n'
+    return '\n'.join((f'<u><b>{exam}' for exam in result))

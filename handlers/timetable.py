@@ -9,7 +9,7 @@ from scripts.excel import get_group_by_fio, get_course_by_fio, is_a_group, is_a_
 
 async def timetable(message: types.Message):
     if message.text == '\U0001F4C5 Расписание на неделю':
-        setattr(timetable, 'throttling_rate_limit', 0.5)
+        setattr(timetable, 'throttling_rate_limit', 2)
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_week_timetable(group)
@@ -36,10 +36,11 @@ async def timetable(message: types.Message):
             reply_markup=menu_markup())
         await FSM_start.menu.set()
     if message.text == '✔ Мои экзамены':
+        setattr(timetable, 'throttling_rate_limit', 0.5)
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_exam(group)
-        await message.answer(text)
+        await message.answer(text, parse_mode=types.ParseMode.HTML)
 
 
 async def timetable_day_lessons(message: types.Message):
