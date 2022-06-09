@@ -94,7 +94,10 @@ def from_du(fio: str) -> bool:
 
 def get_exam(group: str) -> str:
     """Узнать какие экзамены"""
-    exams = df_exam[group].dropna()
-    df_new = df_exam[df_exam[group].isin(exams)][['дни недели', 'дата', group]]
-    result = df_new['дата'] + '(' + df_new['дни недели'] + '):</b></u>\n' + df_new[group] + '\n'
-    return '\n'.join((f'<u><b>{exam}' for exam in result))
+    try:
+        exams = df_exam[group].dropna()
+        df_new = df_exam[df_exam[group].isin(exams)][['дни недели', 'дата', group]]
+        result = df_new['дата'] + '(' + df_new['дни недели'] + '):</b></u>\n' + df_new[group] + '\n'
+        return '\n'.join((f'<u><b>{exam}' for exam in result))
+    except KeyError:
+        return f'У группы {group} нет экзаменов'

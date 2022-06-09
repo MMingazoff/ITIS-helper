@@ -18,14 +18,15 @@ def menu_markup():
 
 def timetable_markup():
     """Кнопки для расписания"""
+    exam = KeyboardButton('✅ Мои экзамены')
+    someone_exam = KeyboardButton('❔ Экзамены другого человека')
     timetable_week = KeyboardButton('\U0001F4C5 Расписание на неделю')
     what_lesson_now = KeyboardButton('\U00002757 Какая у меня сейчас пара')
     timetable_day = KeyboardButton('\U00002753 Расписание на день')
     timetable_group = KeyboardButton('\U0001F50E Узнать пары у другого человека')
     back_to_menu = KeyboardButton('\U0001F519 Вернуться в меню')
-    exam = KeyboardButton('✔ Мои экзамены')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row(exam).row(timetable_week, timetable_day).row(what_lesson_now, timetable_group).row(back_to_menu)
+    keyboard.row(exam, someone_exam).row(timetable_week, timetable_day).row(what_lesson_now, timetable_group).row(back_to_menu)
     return keyboard
 
 
