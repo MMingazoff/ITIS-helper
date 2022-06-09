@@ -14,7 +14,7 @@ async def help(message: types.Message):
         await message.answer(group_list)
     if message.text == '\U0001F517 Полезные ссылки':
         links = '\n'.join(f'{name}: {link}' for name, link in get_everything('links'))
-        await message.answer(links)
+        await message.answer(links, disable_web_page_preview=True)
     if message.text == '\U0001F474 Список старост':
         elders = '\n'.join(f'{group}: {fi} {contact}' for group, fi, contact in get_elders())
         await message.answer(elders)

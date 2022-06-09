@@ -9,7 +9,7 @@ from scripts.sql import get_all_banned_users
 
 banned_users = get_all_banned_users()
 if banned_users:
-    banned_users = {user for user in banned_users[0]}
+    banned_users = {user for user, *args in banned_users}
 else:
     banned_users = {}
 
@@ -18,7 +18,7 @@ def update_banlist():
     global banned_users
     banned_users = get_all_banned_users()
     if banned_users:
-        banned_users = {user for user in banned_users[0]}
+        banned_users = {user for user, *args in banned_users}
     else:
         banned_users = {}
 
@@ -95,7 +95,7 @@ class ThrottlingMiddleware(BaseMiddleware):
                 from create_bot import bot
                 await bot.send_message(text=f'{message.from_user.mention} забанен. ID: {message.from_user.id}', chat_id=-1001603217169)
                 global banned_users
-                banned_users = {user for user in get_all_banned_users()[0]}
+                banned_users = {user for user, *args in get_all_banned_users()}
 
         # Sleep.
         await asyncio.sleep(delta)

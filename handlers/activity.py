@@ -36,6 +36,7 @@ async def activity(message: types.Message):
             await message.answer("Какие мероприятия тебе нужны?", reply_markup=choose_events_markup())
             await FSM_activity.activities.set()
         else:
+            setattr(activity, 'throttling_rate_limit', 0.5)
             # вывод первого поста
             global request_posts
             request_posts = get_request_posts()
@@ -64,6 +65,7 @@ async def activity(message: types.Message):
 
 
 async def choose_activity(message: types.Message):
+    setattr(choose_activity, 'throttling_rate_limit', 0.5)
     if message.text == 'ITIS Request':
         global request_posts
         request_posts = get_request_posts()
