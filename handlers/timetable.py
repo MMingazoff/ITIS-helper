@@ -35,12 +35,16 @@ async def timetable(message: types.Message):
             f'Привет, {fio}, я готов тебе помогать\n\nФИО: {fio} \nКурс: {course} \nГруппа: {group} \nЧто тебе нужно?',
             reply_markup=menu_markup())
         await FSM_start.menu.set()
-    if message.text == '✔ Мои экзамены':
+    if message.text == '✅ Мои экзамены':
         setattr(timetable, 'throttling_rate_limit', 0.5)
         fio = get_profile(message.from_user.id)
         group = get_group_by_fio(fio)
         text = get_exam(group)
         await message.answer(text, parse_mode=types.ParseMode.HTML)
+    if message.text == '❔ Экзамены другого человека':
+        await message.answer('Введи номер группы или фамилию с именем человека,'
+                             ' у которого хочешь узнать расписание экзаменов', reply_markup=timetable_someone_markup())
+        await FSM_timetable.someone_exam.set()
 
 
 async def timetable_day_lessons(message: types.Message):
@@ -85,7 +89,25 @@ async def timetable_someone(message: types.Message):
         await message.answer('Такого ученика/группы нету, попробуйте ввести заново')
 
 
+async def exam_someone(message: types.Message):
+    if is_a_student_by_fi(message.text) or is_a_group(message.text):
+        setattr(timetable_someone, 'throttling_rate_limit', 0.5)
+        if is_a_student_by_fi(message.text):
+            group = get_group_by_fi(message.text)
+        else:
+            group = message.text
+        text = get_exam(group)
+        await message.answer(text, reply_markup=timetable_markup(), parse_mode=types.ParseMode.HTML)
+        await FSM_timetable.timetable.set()
+    elif message.text == '\U0001F519 Вернуться в расписание':
+        await message.answer('Выбери расписание', reply_markup=timetable_markup())
+        await FSM_timetable.timetable.set()
+    else:
+        await message.answer('Такого ученика/группы нету, попробуйте ввести заново')
+
+
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(timetable, state=FSM_timetable.timetable)
     dp.register_message_handler(timetable_day_lessons, state=FSM_timetable.today_tomorrow)
     dp.register_message_handler(timetable_someone, state=FSM_timetable.someone_timetable)
+    dp.register_message_handler(exam_someone, state=FSM_timetable.someone_exam)

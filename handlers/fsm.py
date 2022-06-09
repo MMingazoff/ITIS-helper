@@ -11,6 +11,7 @@ class FSM_timetable(StatesGroup):
     timetable = State()
     today_tomorrow = State()
     someone_timetable = State()
+    someone_exam = State()
 
 
 class FSM_study(StatesGroup):
