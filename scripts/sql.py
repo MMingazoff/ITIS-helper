@@ -243,7 +243,7 @@ def add_to_banlist(user_id: str):
         return False
 
 
-def is_banned(user_id: str):
+def is_banned(user_id: int):
     result = cursor.execute("SELECT * FROM banned_users WHERE user_id = ?", (user_id,))
     return bool(result.fetchall())
 
@@ -253,6 +253,6 @@ def get_all_banned_users():
     return result.fetchall()
 
 
-def delete_from_banlist(user_id: str):
+def delete_from_banlist(user_id: int):
     cursor.execute("DELETE FROM banned_users WHERE user_id = ?", (user_id,))
     base.commit()

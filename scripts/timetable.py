@@ -42,10 +42,10 @@ def get_lessons_by_day(group: str, sheet, day: int) -> str or bool:
     weekdays = {0: "ПОНЕДЕЛЬНИК", 1: "ВТОРНИК", 2: "СРЕДА", 3: "ЧЕТВЕРГ", 4: "ПЯТНИЦА", 5: "СУББОТА"}
     if day == 7:
         day = 0
-    text = f'<i>{weekdays[day]}</i>\n'
-    index = get_index(group, sheet)
     if day == 6:
         return 'Воскресенье - выходной день!'
+    text = f'<i>{weekdays[day]}</i>\n'
+    index = get_index(group, sheet)
     if (day == 2 or day == 5) and get_course(group) == 1:
         return f'{text}Занятия по блоку дисциплин\n"Естественная-научная картина мира"'
     for i in range(2 + day * 7, day * 7 + 9):
