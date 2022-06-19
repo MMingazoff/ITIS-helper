@@ -53,7 +53,7 @@ async def menu(message: types.Message):
         await message.answer('Введи свое ФИО', reply_markup=swap_profile_markup())
     if message.text == '\U000026F3 Активности':
         await message.answer(
-            'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы\n'
+            'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать, где можно заработать баллы\n'
             '<i>Примечание: в рейтинге учитываются баллы реквеста и ДУ</i>',
             reply_markup=activity_markup(),
             parse_mode=types.ParseMode.HTML)

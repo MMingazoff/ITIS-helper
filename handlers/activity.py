@@ -82,7 +82,7 @@ async def choose_activity(message: types.Message):
                              disable_web_page_preview=True)
     if message.text == '\U0001F519 Вернуться в активность':
         await message.answer(
-            'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы',
+            'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать, где можно заработать баллы',
             reply_markup=activity_markup())
         await FSM_activity.activity.set()
 
@@ -138,7 +138,7 @@ async def someone_points(message: types.Message):
         await FSM_activity.activity.set()
     elif message.text == '\U0001F519 Вернуться в активность':
         await message.answer(
-            'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы',
+            'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать, где можно заработать баллы',
             reply_markup=activity_markup())
         await FSM_activity.activity.set()
     else:
@@ -157,7 +157,7 @@ async def top_students(message: types.Message):
         await message.answer(rating_out)
     if message.text == '\U0001F519 Вернуться в активность':
         await message.answer(
-            'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать где можно заработать баллы',
+            'Здесь ты можешь посмотреть рейтинг, узнать свои баллы и узнать, где можно заработать баллы',
             reply_markup=activity_markup())
         await FSM_activity.activity.set()
 
