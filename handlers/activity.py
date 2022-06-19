@@ -46,8 +46,12 @@ async def activity(message: types.Message):
                                  disable_web_page_preview=True)
     if message.text == '\U0001F4C9 Узнать свое место в рейтинге':
         fio = get_profile(message.from_user.id)
-        balls, place = students[fio]
-        await message.answer(f"Ты на {place} месте в топе\nУ тебя {balls} баллов")
+        try:
+            balls, place = students[fio]
+            await message.answer(f"Ты на {place} месте в топе\nУ тебя {balls} баллов")
+        except KeyError:
+            await message.answer("Пока мы не можем сказать сколько у тебя баллов\n"
+                                 "В скором времени постараемя это исправить. Извини🥺")
     if message.text == '\U0001F575 Узнать баллы человека':
         await message.answer('Введите фамилию и имя человека', reply_markup=someone_points_markup())
         await FSM_activity.someone_points.set()
@@ -132,9 +136,14 @@ async def delete_msg_callback(call: types.CallbackQuery):
 async def someone_points(message: types.Message):
     if is_a_student_by_fi(message.text):
         fio = get_fio_by_fi(message.text)
-        balls, place = students[fio]
-        await message.answer(f"{message.text} на {place} месте в топе\nУ него/неё {balls} баллов",
+        try:
+            balls, place = students[fio]
+            await message.answer(f"{message.text} на {place} месте в топе\nУ него/неё {balls} баллов",
                              reply_markup=activity_markup())
+        except KeyError:
+            await message.answer("Пока мы не можем сказать сколько у этого человека баллов\n"
+                                 "В скором времени постараемя это исправить. Извини🥺",
+                                 reply_markup=activity_markup())
         await FSM_activity.activity.set()
     elif message.text == '\U0001F519 Вернуться в активность':
         await message.answer(

@@ -22,7 +22,7 @@ async def enter_fio(message: types.Message):
             reply_markup=menu_markup())
         await FSM_start.menu.set()
     else:
-        await message.answer('Такого студента нет, или вы ошиблись c ФИО')
+        await message.answer('Такого студента нет, или ты ошибся c ФИО')
         await FSM_start.fio.set()
 
 
@@ -31,7 +31,7 @@ async def menu(message: types.Message):
         fio = get_profile(message.from_user.id)
         course = get_course_by_fio(fio)
         if course == 'аспирантура':
-            await message.answer("Извините, но у нас нет расписания аспирантов")
+            await message.answer("Извини, но у нас нет расписания аспирантов")
         else:
             await message.answer('Выбери расписание', reply_markup=timetable_markup())
             await FSM_timetable.timetable.set()
@@ -39,9 +39,9 @@ async def menu(message: types.Message):
         fio = get_profile(message.from_user.id)
         course = get_course_by_fio(fio)
         if course == 'магистратура':
-            await message.answer("Извините, но у нас нет учебных материалов для магистров")
+            await message.answer("Извини, но у нас нет учебных материалов для магистров")
         if course == 'аспирантура':
-            await message.answer("Извините, но у нас нет учебных материалов для аспирантов")
+            await message.answer("Извини, но у нас нет учебных материалов для аспирантов")
         else:
             await message.answer('Выбери нужный тебе предмет', reply_markup=study_markup(course))
             await FSM_study.study.set()
@@ -78,7 +78,7 @@ async def swap_profile(message: types.Message):
             reply_markup=menu_markup())
         await FSM_start.menu.set()
     else:
-        await message.answer(f'Возможно вы ошиблись, попробуйте ввести ФИО ещё раз', reply_markup=swap_profile_markup())
+        await message.answer(f'Возможно ты ошибся, попробуй ввести ФИО ещё раз', reply_markup=swap_profile_markup())
 
 
 def register_commands(dp: Dispatcher):
