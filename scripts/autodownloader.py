@@ -8,9 +8,9 @@ from time import sleep, strftime
 def download():
     start_up()
     download_du_active()
-    print(f'{strftime("%d-%m-%Y %H:%M:%S")}: du downloaded successfully')
+    print(f'{strftime("%d-%m-%Y %H:%M:%S")}: du downloaded successfully', flush=True)
     download_request_active()
-    print(f'{strftime("%d-%m-%Y %H:%M:%S")}: request downloaded successfully')
+    print(f'{strftime("%d-%m-%Y %H:%M:%S")}: request downloaded successfully', flush=True)
 
 
 def run_download():

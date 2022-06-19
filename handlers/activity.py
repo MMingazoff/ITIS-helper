@@ -26,7 +26,7 @@ def update_activity():
     global rating, students
     rating = sorted_balls()
     students = get_students_balls_place(rating)
-    print(f'{strftime("%d-%m-%Y %H:%M:%S")}: balls updated successfully')
+    print(f'{strftime("%d-%m-%Y %H:%M:%S")}: balls updated successfully', flush=True)
 
 
 async def activity(message: types.Message):
