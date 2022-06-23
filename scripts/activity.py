@@ -14,9 +14,21 @@ def get_students_balls():
     students = dict()
     for sheet in request_sheets:
         for name, balls in sheet.iter_rows(min_row=6, min_col=2, max_col=3):
-            students[name.value] = float(balls.value.replace(',', '.')) + students.get(name.value, 0)
+            if name.value:
+                name = name.value.strip()
+            else:
+                continue
+            if name[0] == '-':
+                name = name[2:]
+            students[name] = float(balls.value.replace(',', '.')) + students.get(name, 0)
     for name, balls in du_sheets[0].iter_rows(min_row=2, min_col=2, max_col=3):
-        students[name.value] = float(balls.value.replace(',', '.')) + students.get(name.value, 0)
+        if name.value:
+            name = name.value.strip()
+        else:
+            continue
+        if name[0] == '-':
+            name = name[2:]
+        students[name] = float(balls.value.replace(',', '.')) + students.get(name, 0)
     return students
 
 
